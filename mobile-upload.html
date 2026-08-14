@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>📱 آپلود عکس تیام جان</title>
+<title>📱 مدیریت آلبوم تیام جان</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,Tahoma,sans-serif;color:#123f3a;
   background:linear-gradient(135deg,#eaf6fd,#f2fbf5 40%,#fdf3e7 75%,#fdeef0);
-  padding:16px;min-height:100vh}
+  padding:16px;min-height:100vh;padding-bottom:40px}
 h1{font-size:1.4rem;text-align:center;margin:14px 0 18px;color:#14655b;font-weight:900}
 h1 b{color:#ff6b5e}
 .container{max-width:500px;margin:0 auto}
 .card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(18,63,58,.12);margin-bottom:14px}
-.card h2{font-size:1rem;margin-bottom:12px;color:#14655b;font-weight:700}
+.card h2{font-size:1rem;margin-bottom:12px;color:#14655b;font-weight:700;display:flex;align-items:center;gap:6px}
 .upload-btn{display:block;width:100%;background:linear-gradient(135deg,#ff8a5c,#ff6b5e);color:#fff;
   border:0;border-radius:14px;padding:16px;font-size:1rem;font-weight:700;cursor:pointer;
   font-family:inherit;margin-bottom:10px;-webkit-appearance:none}
@@ -41,12 +41,26 @@ h1 b{color:#ff6b5e}
   -webkit-appearance:none;margin-top:8px}
 .empty{text-align:center;color:#8aa6a1;padding:20px;font-size:.88rem}
 .count-badge{background:#ff6b5e;color:#fff;padding:2px 8px;border-radius:999px;font-size:.75rem;
-  font-weight:700;margin-right:6px}
+  font-weight:700}
+.comment-item{background:#f8fffe;border:1.5px solid #e3f2ee;border-radius:12px;padding:12px;
+  margin-bottom:10px;position:relative}
+.comment-author{font-weight:700;color:#14655b;font-size:.88rem;margin-bottom:4px}
+.comment-text{color:#214f49;font-size:.85rem;line-height:1.7;margin-bottom:6px;word-break:break-word}
+.comment-meta{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:#8aa6a1}
+.comment-del{background:#fdecea;color:#c0392b;border:0;border-radius:8px;padding:5px 12px;
+  font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;-webkit-appearance:none}
+.comment-del:active{transform:scale(.95)}
+.comment-del:disabled{opacity:.5}
+.tab-bar{display:flex;gap:8px;margin-bottom:14px}
+.tab-btn{flex:1;background:#fff;border:2px solid #e3f2ee;border-radius:12px;padding:10px;
+  font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;color:#4c6b66;
+  -webkit-appearance:none;transition:.2s}
+.tab-btn.active{background:#14655b;color:#fff;border-color:#14655b}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>📱 مدیریت عکس <b>تیام جان</b></h1>
+  <h1>📱 مدیریت آلبوم <b>تیام جان</b></h1>
   
   <div class="card">
     <h2>📷 افزودن عکس جدید</h2>
@@ -58,10 +72,22 @@ h1 b{color:#ff6b5e}
   </div>
 
   <div class="card">
-    <h2>🖼 عکس‌های آلبوم <span class="count-badge" id="countBadge">0</span></h2>
-    <div id="photosList" class="photos-grid"></div>
-    <div id="emptyMsg" class="empty" hidden>هنوز عکسی در آلبوم نیست</div>
-    <button class="refresh-btn" id="btnRefresh">🔄 به‌روزرسانی لیست</button>
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tabPhotos">🖼 عکس‌ها <span class="count-badge" id="photoCount">0</span></button>
+      <button class="tab-btn" id="tabComments">💬 یادگاری‌ها <span class="count-badge" id="commentCount">0</span></button>
+    </div>
+    
+    <div id="photosSection">
+      <div id="photosList" class="photos-grid"></div>
+      <div id="photosEmpty" class="empty" hidden>هنوز عکسی در آلبوم نیست</div>
+    </div>
+    
+    <div id="commentsSection" hidden>
+      <div id="commentsList"></div>
+      <div id="commentsEmpty" class="empty" hidden>هنوز یادگاری ثبت نشده</div>
+    </div>
+    
+    <button class="refresh-btn" id="btnRefresh">🔄 به‌روزرسانی</button>
   </div>
 </div>
 <script>
@@ -87,19 +113,38 @@ function setStatus(msg,type){
 }
 
 function faDate(t){return new Date(t).toLocaleDateString('fa-IR');}
+function faDateTime(t){
+  const d=new Date(t);
+  return d.toLocaleDateString('fa-IR')+' - '+d.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+}
 
+// ═══ تب‌ها ═══
+$('#tabPhotos').onclick=()=>{
+  $('#tabPhotos').classList.add('active');
+  $('#tabComments').classList.remove('active');
+  $('#photosSection').hidden=false;
+  $('#commentsSection').hidden=true;
+};
+$('#tabComments').onclick=()=>{
+  $('#tabComments').classList.add('active');
+  $('#tabPhotos').classList.remove('active');
+  $('#photosSection').hidden=true;
+  $('#commentsSection').hidden=false;
+};
+
+// ═══ بارگذاری عکس‌ها ═══
 async function loadPhotos(){
   const list=$('#photosList');
   list.innerHTML='<div class="empty">⏳ در حال بارگذاری...</div>';
-  $('#emptyMsg').hidden=true;
+  $('#photosEmpty').hidden=true;
   try{
     const {data,error}=await sb.from('photos').select('*').eq('album_id',ALBUM_ID).order('added_at',{ascending:false});
     if(error)throw error;
     const photos=data||[];
-    $('#countBadge').textContent=fa(photos.length);
+    $('#photoCount').textContent=fa(photos.length);
     if(!photos.length){
       list.innerHTML='';
-      $('#emptyMsg').hidden=false;
+      $('#photosEmpty').hidden=false;
       return;
     }
     list.innerHTML='';
@@ -111,18 +156,15 @@ async function loadPhotos(){
         +'<div class="photo-date">'+faDate(p.added_at)+'</div>';
       list.appendChild(item);
     });
-    // دکمه‌های حذف
     list.querySelectorAll('.photo-del').forEach(btn=>{
       btn.onclick=async()=>{
         if(!confirm('آیا مطمئنی می‌خواهی این عکس را حذف کنی؟'))return;
         btn.disabled=true;
         btn.textContent='...';
-        const id=btn.dataset.id;
-        const path=btn.dataset.path;
         try{
-          const {error:delErr}=await sb.storage.from(BUCKET).remove([path]);
+          const {error:delErr}=await sb.storage.from(BUCKET).remove([btn.dataset.path]);
           if(delErr)throw delErr;
-          const {error:dbErr}=await sb.from('photos').delete().eq('id',id);
+          const {error:dbErr}=await sb.from('photos').delete().eq('id',btn.dataset.id);
           if(dbErr)throw dbErr;
           setStatus('✅ عکس حذف شد','ok');
           setTimeout(loadPhotos,500);
@@ -139,10 +181,60 @@ async function loadPhotos(){
   }
 }
 
+// ═══ بارگذاری کامنت‌ها ═══
+async function loadComments(){
+  const list=$('#commentsList');
+  list.innerHTML='<div class="empty">⏳ در حال بارگذاری...</div>';
+  $('#commentsEmpty').hidden=true;
+  try{
+    const {data,error}=await sb.from('comments').select('*').order('created_at',{ascending:false}).limit(50);
+    if(error)throw error;
+    const comments=data||[];
+    $('#commentCount').textContent=fa(comments.length);
+    if(!comments.length){
+      list.innerHTML='';
+      $('#commentsEmpty').hidden=false;
+      return;
+    }
+    list.innerHTML='';
+    comments.forEach(c=>{
+      const item=document.createElement('div');
+      item.className='comment-item';
+      item.innerHTML='<div class="comment-author">🌸 '+(c.author||'مهمان')+'</div>'
+        +'<div class="comment-text">'+(c.message||'')+'</div>'
+        +'<div class="comment-meta">'
+          +'<span>'+faDateTime(c.created_at)+'</span>'
+          +'<button class="comment-del" data-id="'+c.id+'">🗑 حذف</button>'
+        +'</div>';
+      list.appendChild(item);
+    });
+    list.querySelectorAll('.comment-del').forEach(btn=>{
+      btn.onclick=async()=>{
+        if(!confirm('آیا مطمئنی می‌خواهی این یادگاری را حذف کنی؟'))return;
+        btn.disabled=true;
+        btn.textContent='...';
+        try{
+          const {error:delErr}=await sb.from('comments').delete().eq('id',btn.dataset.id);
+          if(delErr)throw delErr;
+          setStatus('✅ یادگاری حذف شد','ok');
+          setTimeout(loadComments,500);
+        }catch(e){
+          setStatus('❌ خطا در حذف: '+(e.message||e),'err');
+          btn.disabled=false;
+          btn.textContent='🗑 حذف';
+        }
+      };
+    });
+  }catch(e){
+    list.innerHTML='<div class="empty">❌ خطا در بارگذاری</div>';
+    console.error(e);
+  }
+}
+
+// ═══ آپلود عکس ═══
 $('#btnUpload').onclick=()=>$('#fileInput').click();
 $('#btnCamera').onclick=()=>$('#cameraInput').click();
-$('#btnRefresh').onclick=loadPhotos;
-
+$('#btnRefresh').onclick=()=>{loadPhotos();loadComments();};
 $('#fileInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
 $('#cameraInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
 
@@ -202,8 +294,9 @@ async function uploadFiles(files){
   }
 }
 
-// لود اولیه
+// ═══ لود اولیه ═══
 loadPhotos();
+loadComments();
 </script>
 </body>
 </html>
