@@ -88,7 +88,7 @@ header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
 .cinema-title{
   font-family:'Lalezar',cursive;font-size:clamp(3rem,10vw,5.5rem);
   font-weight:400;line-height:1.1;margin-bottom:12px;
-  display:flex;justify-content:center;flex-wrap:wrap;gap:4px;
+  display:flex;justify-content:center;flex-wrap:wrap;gap:0;
 }
 .cinema-title .letter{
   display:inline-block;opacity:0;
@@ -97,6 +97,7 @@ header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 4px 12px rgba(255,107,94,.3));
 }
+.cinema-title .word-space{width:0.3em}
 @keyframes letterIn{
   from{opacity:0;transform:translateY(50px) rotateX(90deg) scale(.5)}
   to{opacity:1;transform:translateY(0) rotateX(0) scale(1)}
@@ -162,7 +163,7 @@ header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
 .stat-chip b{color:var(--accent);font-family:'Lalezar',cursive;font-size:1.1rem}
 
 /* ═══ تایم‌لاین ═══ */
-.timeline{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:20px}
+.timeline{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:20px;overflow-x:hidden}
 .timeline-line{
   position:absolute;left:50%;top:0;bottom:0;width:4px;
   background:linear-gradient(180deg,transparent,var(--teal),var(--accent),transparent);
@@ -172,6 +173,7 @@ header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
   position:relative;width:50%;padding:20px 40px;
   opacity:0;transform:translateY(40px);
   transition:opacity .7s ease,transform .7s ease;
+  max-width:100%;overflow:hidden;
 }
 .tl-item.visible{opacity:1;transform:translateY(0)}
 .tl-item:nth-child(odd){left:0;text-align:left}
@@ -193,7 +195,9 @@ header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
 .photo-card{
   position:relative;cursor:pointer;transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
   opacity:0;animation:photoIn .8s cubic-bezier(.34,1.56,.64,1) forwards;
+  max-width:280px;width:100%;
 }
+.tl-item img{max-width:100%;height:auto}
 @keyframes photoIn{
   from{opacity:0;transform:translateY(30px) scale(.8) rotate(var(--rot,0deg))}
   to{opacity:1;transform:translateY(0) scale(1) rotate(var(--rot,0deg))}
@@ -372,6 +376,7 @@ footer{
   .age-counter{padding:12px 18px;gap:6px}
   .age-unit{min-width:48px}
   .age-num{font-size:1.6rem}
+  .photo-card{max-width:100%}
 }
 </style>
 </head>
@@ -474,7 +479,6 @@ const STICKERS=["🧸","🍼","⭐","🌸","🎈","💛","🌙","🦋"];
 
 // ═══ ساخت پس‌زمینه (حباب + ستاره) ═══
 function createBackground(){
-  // حباب‌ها
   for(let i=0;i<15;i++){
     const b=document.createElement("div");
     b.className="bubble";
@@ -486,7 +490,6 @@ function createBackground(){
     b.style.animationDelay=(Math.random()*20)+"s";
     document.body.appendChild(b);
   }
-  // ستاره‌ها
   for(let i=0;i<40;i++){
     const s=document.createElement("div");
     s.className="star";
@@ -501,7 +504,7 @@ function createBackground(){
   }
 }
 
-// ═══ هدر سینمایی ═══
+// ═══ هدر سینمایی (تیام جان یکپارچه) ═══
 function setupTitle(){
   const title="تیام جان";
   const el=$("#cinemaTitle");
@@ -509,7 +512,11 @@ function setupTitle(){
   [...title].forEach((ch,i)=>{
     const span=document.createElement("span");
     span.className="letter";
-    span.textContent=ch===" "?"\u00A0":ch;
+    if(ch===" "){
+      span.classList.add("word-space");
+    }else{
+      span.textContent=ch;
+    }
     span.style.animationDelay=(i*0.1)+"s";
     el.appendChild(span);
   });
@@ -639,7 +646,6 @@ function renderTimeline(){
     item.querySelector(".photo-card").onclick=()=>openLB(i);
     tl.appendChild(item);
   });
-  // انیمیشن ورود با IntersectionObserver
   const observer=new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
@@ -708,7 +714,6 @@ $("#lbLike").onclick=async()=>{
     $("#lbLike").classList.add("liked");
     heartRain();
     fireConfetti();
-    $("#statLikes").textContent=fa(parseInt($("#statLikes").textContent.replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)))+1||likesMap[p.id]);
     loadData();
   }catch(e){
     toast("❌ خطا در لایک");
@@ -796,7 +801,6 @@ $("#nightToggle").onclick=()=>{
   $("#nightToggle").textContent=isNight?"☀️":"🌙";
   localStorage.setItem("nightMode",isNight?"1":"0");
 };
-// بارگذاری حالت ذخیره‌شده
 if(localStorage.getItem("nightMode")==="1"){
   document.body.classList.add("night");
   $("#nightToggle").textContent="☀️";
@@ -809,7 +813,7 @@ setQuote();
 updateAge();
 setInterval(updateAge,1000);
 loadData();
-fireConfetti(); // Confetti اولیه هنگام باز شدن صفحه
+fireConfetti();
 </script>
 </body>
 </html>
