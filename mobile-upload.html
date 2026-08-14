@@ -15,6 +15,7 @@ h1{font-size:1.4rem;text-align:center;margin:14px 0 18px;color:#14655b;font-weig
 h1 b{color:#ff6b5e}
 .container{max-width:500px;margin:0 auto}
 .card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(18,63,58,.12);margin-bottom:14px}
+.card h2{font-size:1rem;margin-bottom:12px;color:#14655b;font-weight:700}
 .upload-btn{display:block;width:100%;background:linear-gradient(135deg,#ff8a5c,#ff6b5e);color:#fff;
   border:0;border-radius:14px;padding:16px;font-size:1rem;font-weight:700;cursor:pointer;
   font-family:inherit;margin-bottom:10px;-webkit-appearance:none}
@@ -24,24 +25,43 @@ h1 b{color:#ff6b5e}
 .status.ok{display:block;background:#e8f7ee;color:#1d7a35}
 .status.err{display:block;background:#fdecea;color:#c0392b}
 .status.info{display:block;background:#eef4fb;color:#2c5f8a}
-.log{background:#1e293b;color:#94e2d5;border-radius:12px;padding:12px;font-size:.72rem;
-  font-family:monospace;max-height:250px;overflow:auto;margin-top:12px;white-space:pre-wrap;
-  direction:ltr;text-align:left;line-height:1.6}
-.preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;margin-top:12px}
-.preview img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
+.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:10px}
+.photo-item{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#eef4f2;box-shadow:0 3px 8px rgba(0,0,0,.1)}
+.photo-item img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-del{position:absolute;top:5px;right:5px;width:30px;height:30px;border-radius:50%;
+  background:rgba(255,107,94,.95);color:#fff;border:0;font-size:1rem;cursor:pointer;
+  box-shadow:0 3px 8px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;
+  -webkit-appearance:none}
+.photo-del:active{transform:scale(.9)}
+.photo-del:disabled{opacity:.5}
+.photo-date{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;
+  font-size:.65rem;padding:3px 6px;text-align:center}
+.refresh-btn{background:#fff;border:2px solid #14655b;color:#14655b;border-radius:12px;padding:10px;
+  font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;
+  -webkit-appearance:none;margin-top:8px}
+.empty{text-align:center;color:#8aa6a1;padding:20px;font-size:.88rem}
+.count-badge{background:#ff6b5e;color:#fff;padding:2px 8px;border-radius:999px;font-size:.75rem;
+  font-weight:700;margin-right:6px}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>📱 آپلود عکس <b>تیام جان</b></h1>
+  <h1>📱 مدیریت عکس <b>تیام جان</b></h1>
+  
   <div class="card">
+    <h2>📷 افزودن عکس جدید</h2>
     <button class="upload-btn" id="btnUpload">📸 انتخاب عکس از گالری</button>
     <button class="upload-btn" id="btnCamera">📷 گرفتن عکس با دوربین</button>
     <input type="file" class="file-input" id="fileInput" accept="image/*" multiple>
     <input type="file" class="file-input" id="cameraInput" accept="image/*" capture="environment">
-    <div id="preview" class="preview"></div>
     <div class="status" id="status"></div>
-    <div class="log" id="log"></div>
+  </div>
+
+  <div class="card">
+    <h2>🖼 عکس‌های آلبوم <span class="count-badge" id="countBadge">0</span></h2>
+    <div id="photosList" class="photos-grid"></div>
+    <div id="emptyMsg" class="empty" hidden>هنوز عکسی در آلبوم نیست</div>
+    <button class="refresh-btn" id="btnRefresh">🔄 به‌روزرسانی لیست</button>
   </div>
 </div>
 <script>
@@ -52,134 +72,138 @@ const sb=supabase.createClient(CFG.url,CFG.anon);
 const $=s=>document.querySelector(s);
 const fa=n=>Number(n).toLocaleString("fa-IR");
 
-// ===== تابع تولید UUID واقعی (حل مشکل) =====
 function makeUUID(){
-  if(crypto && crypto.randomUUID){
-    try{return crypto.randomUUID();}catch(e){}
-  }
-  // fallback: تولید UUID v4 دستی
+  if(crypto && crypto.randomUUID){try{return crypto.randomUUID();}catch(e){}}
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){
     var r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);
     return v.toString(16);
   });
 }
 
-function log(msg){
-  const el=$('#log');
-  el.textContent+='['+new Date().toLocaleTimeString('fa-IR')+'] '+msg+'\n';
-  el.scrollTop=el.scrollHeight;
-}
 function setStatus(msg,type){
   const s=$('#status');
   s.className='status '+(type||'info');
   s.textContent=msg;
 }
 
-log('✅ صفحه لود شد');
-log('🔗 URL: '+CFG.url);
-log('📁 ALBUM_ID: '+ALBUM_ID);
+function faDate(t){return new Date(t).toLocaleDateString('fa-IR');}
+
+async function loadPhotos(){
+  const list=$('#photosList');
+  list.innerHTML='<div class="empty">⏳ در حال بارگذاری...</div>';
+  $('#emptyMsg').hidden=true;
+  try{
+    const {data,error}=await sb.from('photos').select('*').eq('album_id',ALBUM_ID).order('added_at',{ascending:false});
+    if(error)throw error;
+    const photos=data||[];
+    $('#countBadge').textContent=fa(photos.length);
+    if(!photos.length){
+      list.innerHTML='';
+      $('#emptyMsg').hidden=false;
+      return;
+    }
+    list.innerHTML='';
+    photos.forEach(p=>{
+      const item=document.createElement('div');
+      item.className='photo-item';
+      item.innerHTML='<img src="'+p.url+'" alt="">'
+        +'<button class="photo-del" data-id="'+p.id+'" data-path="'+p.path+'">🗑</button>'
+        +'<div class="photo-date">'+faDate(p.added_at)+'</div>';
+      list.appendChild(item);
+    });
+    // دکمه‌های حذف
+    list.querySelectorAll('.photo-del').forEach(btn=>{
+      btn.onclick=async()=>{
+        if(!confirm('آیا مطمئنی می‌خواهی این عکس را حذف کنی؟'))return;
+        btn.disabled=true;
+        btn.textContent='...';
+        const id=btn.dataset.id;
+        const path=btn.dataset.path;
+        try{
+          const {error:delErr}=await sb.storage.from(BUCKET).remove([path]);
+          if(delErr)throw delErr;
+          const {error:dbErr}=await sb.from('photos').delete().eq('id',id);
+          if(dbErr)throw dbErr;
+          setStatus('✅ عکس حذف شد','ok');
+          setTimeout(loadPhotos,500);
+        }catch(e){
+          setStatus('❌ خطا در حذف: '+(e.message||e),'err');
+          btn.disabled=false;
+          btn.textContent='🗑';
+        }
+      };
+    });
+  }catch(e){
+    list.innerHTML='<div class="empty">❌ خطا در بارگذاری</div>';
+    console.error(e);
+  }
+}
 
 $('#btnUpload').onclick=()=>$('#fileInput').click();
 $('#btnCamera').onclick=()=>$('#cameraInput').click();
+$('#btnRefresh').onclick=loadPhotos;
+
 $('#fileInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
 $('#cameraInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
 
+async function processFile(f){
+  return await new Promise((res,rej)=>{
+    const img=new Image();
+    const url=URL.createObjectURL(f);
+    img.onload=()=>{
+      try{
+        const w=img.naturalWidth,h=img.naturalHeight;
+        const M=1400,s=Math.min(1,M/Math.max(w,h));
+        const c=document.createElement('canvas');
+        c.width=Math.max(1,Math.round(w*s));
+        c.height=Math.max(1,Math.round(h*s));
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(b=>{if(b)res(b);else rej(new Error('toBlob null'));},'image/jpeg',.85);
+      }catch(e){rej(e);}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('Image fail'));};
+    img.src=url;
+  });
+}
+
 async function uploadFiles(files){
-  const list=Array.from(files);
-  log('📥 تعداد فایل‌های انتخاب‌شده: '+list.length);
+  const list=Array.from(files).filter(f=>f.type.startsWith('image/'));
   if(!list.length){setStatus('فایلی انتخاب نشد','err');return;}
-  
-  list.forEach((f,i)=>log('  فایل '+fa(i+1)+': '+f.name+' | '+f.type+' | '+Math.round(f.size/1024)+'KB'));
-  
   $('#btnUpload').disabled=true;
   $('#btnCamera').disabled=true;
-  
-  let success=0,fail=0;
+  setStatus('📤 در حال آپلود '+fa(list.length)+' عکس...','info');
+  let success=0;
   for(let i=0;i<list.length;i++){
     const f=list[i];
     try{
-      setStatus('📤 آپلود '+fa(i+1)+' از '+fa(list.length)+'...','info');
-      log('🔄 شروع آپلود: '+f.name);
-      
       const blob=await processFile(f);
-      log('✅ پردازش عکس تمام شد، سایز: '+Math.round(blob.size/1024)+'KB');
-      
-      const id=makeUUID(); // ← اینجا ID واقعی UUID ساخته می‌شود
+      const id=makeUUID();
       const path=ALBUM_ID+'/'+id+'.jpg';
-      log('📤 آپلود به storage: '+path);
-      log('🆔 UUID جدید: '+id);
-      
       const {error:upErr}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg'});
-      if(upErr){
-        log('❌ خطای storage: '+upErr.message);
-        throw upErr;
-      }
-      log('✅ آپلود storage موفق');
-      
+      if(upErr)throw upErr;
       const {data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
-      log('🔗 publicUrl: '+publicUrl);
-      
       const {error:dbErr}=await sb.from('photos').insert({
-        id:id,
-        album_id:ALBUM_ID,
-        path:path,
-        url:publicUrl,
-        caption:'',
+        id,album_id:ALBUM_ID,path,url:publicUrl,caption:'',
         added_at:new Date().toISOString()
       });
-      if(dbErr){
-        log('❌ خطای database: '+dbErr.message);
-        throw dbErr;
-      }
-      log('✅ ثبت در database موفق');
+      if(dbErr)throw dbErr;
       success++;
     }catch(e){
-      fail++;
-      log('❌ خطای کلی: '+(e.message||JSON.stringify(e)));
+      console.error(e);
       setStatus('❌ خطا: '+(e.message||e),'err');
     }
   }
-  
   $('#btnUpload').disabled=false;
   $('#btnCamera').disabled=false;
   if(success>0){
-    setStatus('✅ '+fa(success)+' عکس آپلود شد!'+(fail>0?' ('+fa(fail)+' خطا)':''),'ok');
-    log('🎉 تمام شد: '+success+' موفق، '+fail+' ناموفق');
-  }else{
-    setStatus('❌ هیچ عکسی آپلود نشد.','err');
+    setStatus('✅ '+fa(success)+' عکس اضافه شد!','ok');
+    loadPhotos();
   }
 }
 
-async function processFile(f){
-  log('🖼 پردازش عکس شروع شد: '+f.type);
-  try{
-    return await new Promise((res,rej)=>{
-      const img=new Image();
-      const url=URL.createObjectURL(f);
-      img.onload=()=>{
-        try{
-          const w=img.naturalWidth,h=img.naturalHeight;
-          log('  ابعاد: '+w+'x'+h);
-          const M=1400,s=Math.min(1,M/Math.max(w,h));
-          const c=document.createElement('canvas');
-          c.width=Math.max(1,Math.round(w*s));
-          c.height=Math.max(1,Math.round(h*s));
-          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-          URL.revokeObjectURL(url);
-          c.toBlob(b=>{
-            if(b)res(b);
-            else rej(new Error('toBlob null شد'));
-          },'image/jpeg',.85);
-        }catch(e){rej(e);}
-      };
-      img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('Image load fail'));};
-      img.src=url;
-    });
-  }catch(e){
-    log('⚠️ پردازش fail شد، فایل اصلی را آپلود می‌کنم: '+e.message);
-    return f;
-  }
-}
+// لود اولیه
+loadPhotos();
 </script>
 </body>
 </html>
