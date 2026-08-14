@@ -1,2 +1,815 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>آلبوم تیام جان 🍼</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Tahoma,sans-serif;min-height:100vh;color:#123f3a;overflow-x:hidden;background:linear-gradient(135deg,#eaf6fd 0%,#f2fbf5 40%,#fdf3e7 75%,#fdeef0 100%);background-attachment:fixed}.fl{position:fixed;font-size:22px;opacity:.35;pointer-events:none;z-index:0;animation:floaty 9s ease-in-out infinite}@keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-34px) rotate(8deg)}}header{text-align:center;padding:50px 16px 14px;position:relative;z-index:2}h1{font-size:clamp(2.3rem,7vw,3.6rem);font-weight:900;letter-spacing:-1px}h1 b{background:linear-gradient(135deg,#ff6b5e,#ff9a6b);-webkit-background-clip:text;background-clip:text;color:transparent}.age{display:inline-block;background:#fff3cd;border:2px solid #f2c14e;color:#8a6100;border-radius:999px;padding:.35rem 1.1rem;font-weight:bold;font-size:.9rem;margin-top:.6rem;box-shadow:0 4px 12px rgba(242,193,78,.3)}.cnt{color:#4c6b66;font-size:.9rem;margin-top:.8rem}.grid{columns:240px;column-gap:20px;max-width:1100px;margin:28px auto;padding:0 18px 60px;position:relative;z-index:2}.p{background:#fff;padding:10px 10px 12px;border-radius:10px;margin:0 0 22px;break-inside:avoid;position:relative;box-shadow:0 10px 26px rgba(18,63,58,.14);transform:rotate(var(--t));transition:.35s;cursor:zoom-in}.p:hover{transform:rotate(0) translateY(-8px) scale(1.02);box-shadow:0 22px 44px rgba(18,63,58,.24);z-index:3}.p::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:90px;height:24px;background:rgba(255,211,77,.8);border-radius:2px;box-shadow:0 3px 6px rgba(0,0,0,.08)}.sk{position:absolute;top:10px;right:10px;font-size:1.6rem;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}.fv{position:absolute;top:10px;left:10px;font-size:1.1rem;z-index:2}.im{line-height:0;border-radius:6px;overflow:hidden;background:#eef4f2}.im img{width:100%;display:block;transition:.4s}.p:hover .im img{transform:scale(1.05)}figcaption{display:flex;justify-content:space-between;gap:8px;padding-top:10px;align-items:baseline}.c{font-weight:bold;font-size:.88rem;color:#214f49;flex:1}.d{font-size:.68rem;color:#8aa6a1;white-space:nowrap}#msg{text-align:center;padding:44px 20px;color:#4c6b66;font-size:1.05rem;position:relative;z-index:2}#lb{position:fixed;inset:0;background:rgba(10,32,29,.94);display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}#lb img{max-width:90vw;max-height:46vh;background:#fff;padding:8px;border-radius:12px;box-shadow:0 30px 70px rgba(0,0,0,.5)}#lbC{color:#fff;font-weight:bold;margin-top:10px;font-size:1rem;text-align:center}#lbD{color:#9fc5be;font-size:.8rem;margin-top:.3rem}#lbN{color:#9fc5be;font-size:.78rem;margin-top:.4rem}.nx{position:absolute;top:28%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:0;background:#fff;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.3)}#pv{right:12px}#nv{left:12px}#xx{position:absolute;top:12px;left:12px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;font-size:1.05rem;cursor:pointer}.lb-actions{margin-top:.8rem}.likebtn{background:#fff;border:0;border-radius:999px;padding:.5rem 1.3rem;font-size:.95rem;cursor:pointer;font-weight:bold;color:#e8554a;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:.2s}.likebtn:hover{transform:scale(1.06)}.likebtn.liked{background:#fdecea}.comments{max-width:92vw;width:560px;max-height:190px;overflow:auto;background:#fff;border-radius:16px;margin-top:.8rem;padding:.8rem 1rem;text-align:right;box-shadow:0 8px 24px rgba(0,0,0,.25)}.comment{border-bottom:1px solid #f0eee8;padding:.5rem 0;font-size:.82rem;line-height:1.7}.comment:last-child{border-bottom:none}.comment b{color:#14655b}.comment small{color:#8aa6a1;display:block;font-size:.66rem}.cform{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}.cform input{flex:1;min-width:110px;border:2px solid #e3f2ee;border-radius:12px;padding:.5rem .7rem;font-size:.82rem;font-family:inherit}.cform input:focus{outline:none;border-color:#14655b}.burst{position:fixed;pointer-events:none;z-index:99;font-size:20px;transition:all 1.1s ease-out}footer{text-align:center;color:#7a9790;font-size:.8rem;padding:0 0 40px;position:relative;z-index:2}</style></head><body><header><h1>آلبوم <b id="hname">تیام جان</b> 🍼</h1><div class="age" id="hage"></div><div class="cnt" id="hcnt"></div></header><div id="msg">در حال باز کردن آلبوم…</div><div class="grid" id="grid"></div><div id="lb"><button id="xx">✕</button><button class="nx" id="pv">‹</button><button class="nx" id="nv">›</button><img id="lbI" alt=""><div id="lbC"></div><div id="lbD"></div><div id="lbN"></div><div class="lb-actions"><button class="likebtn" id="likeBtn">❤️ <span id="likeCount">۰</span></button></div><div class="comments"><div id="commentsList"></div><div class="cform"><input id="cname" placeholder="اسم (اختیاری)"><input id="cmsg" placeholder="یه یادگاری بنویس…"><button class="likebtn" id="cSend">ثبت 🌸</button></div></div></div><footer>ساخته‌شده با ❤ برای تیام جان</footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>var CFG={"url":"https://kabgmypavsagbomdvzga.supabase.co","anon":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthYmdteXBhdnNhZ2JvbWR2emdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0Njc0NzksImV4cCI6MjEwMjA0MzQ3OX0.6kNctpCc7Qmj1bihs9clokk70UzX12-oy-wxlsiJKmY"};var ALBUMID="bb7c5a06-a2d4-4b1a-8167-410ca42de9e1";var sb=supabase.createClient(CFG.url,CFG.anon);function fa(n){return Number(n).toLocaleString("fa-IR")}function parseD(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}function ageStr(bd){var b=parseD(bd),n=new Date();var m=(n.getFullYear()-b.getFullYear())*12+(n.getMonth()-b.getMonth());var d=n.getDate()-b.getDate();if(d<0){m--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate()}if(m<0)return"";var y=Math.floor(m/12),mm=m%12,t="🎂 ";if(y)t+=fa(y)+" سال و ";if(mm||y)t+=fa(mm)+" ماه و ";return t+fa(d)+" روزه · متولد "+parseD(bd).toLocaleDateString("fa-IR",{year:"numeric",month:"long",day:"numeric"})}var DEC=["🧸","🍼","⭐","🌸","💛","🎈"];for(var di=0;di<10;di++){var s=document.createElement("span");s.className="fl";s.textContent=DEC[di%DEC.length];s.style.left=(Math.random()*95)+"%";s.style.top=(Math.random()*95)+"%";s.style.animationDelay=(Math.random()*8)+"s";s.style.fontSize=(16+Math.random()*16)+"px";document.body.appendChild(s);}var _ph=[],cur=-1,curId=null;function heartBurst(){var b=document.getElementById("likeBtn");var r=b.getBoundingClientRect();for(var i=0;i<7;i++){var h=document.createElement("span");h.className="burst";h.textContent="❤️";h.style.left=(r.left+r.width/2)+"px";h.style.top=(r.top)+"px";document.body.appendChild(h);(function(el){setTimeout(function(){el.style.transform="translate("+((Math.random()*120-60))+"px,-"+(90+Math.random()*80)+"px)";el.style.opacity="0";},30);setTimeout(function(){el.remove()},1200);})(h);}}async function loadSocial(pid){var lb2=document.getElementById("likeBtn");var lc=document.getElementById("likeCount");var cl=document.getElementById("commentsList");try{var lr=await sb.from("likes").select("id").eq("photo_id",pid);lc.textContent=fa(lr.data?lr.data.length:0);if(localStorage.getItem("liked_"+pid)){lb2.classList.add("liked")}else{lb2.classList.remove("liked")}var cr=await sb.from("comments").select("*").eq("photo_id",pid).order("created_at",{ascending:true});var cm=cr.data||[];cl.innerHTML="";if(cm.length===0){var d0=document.createElement("div");d0.className="comment";d0.textContent="هنوز یادگاری نیست. اولین نفر باش! 🌸";cl.appendChild(d0);}for(var i=0;i<cm.length;i++){var d=document.createElement("div");d.className="comment";var b=document.createElement("b");b.textContent=(cm[i].author||"مهمان")+" :";var sp=document.createElement("span");sp.textContent=" "+(cm[i].message||"");var sm=document.createElement("small");sm.textContent=new Date(cm[i].created_at).toLocaleDateString("fa-IR");d.appendChild(b);d.appendChild(sp);d.appendChild(sm);cl.appendChild(d);}}catch(e){}}document.getElementById("likeBtn").onclick=function(){doLike(curId)};document.getElementById("cSend").onclick=function(){addComment(curId)};async function doLike(pid){if(!pid)return;if(localStorage.getItem("liked_"+pid))return;await sb.from("likes").insert({photo_id:pid});localStorage.setItem("liked_"+pid,"1");heartBurst();loadSocial(pid);}async function addComment(pid){if(!pid)return;var name=document.getElementById("cname").value.trim()||"مهمان";var msg=document.getElementById("cmsg").value.trim();if(!msg)return;await sb.from("comments").insert({photo_id:pid,author:name,message:msg});document.getElementById("cmsg").value="";loadSocial(pid);}async function boot(){var m=document.getElementById("msg");try{var ar=await sb.from("albums").select("*").eq("id",ALBUMID).maybeSingle();if(!ar.data){m.textContent="آلبوم پیدا نشد 😢";return}var a=ar.data;document.title="آلبوم "+a.name+" 🍼";document.getElementById("hname").textContent=a.name;if(a.bday){document.getElementById("hage").textContent=ageStr(a.bday)}else{document.getElementById("hage").style.display="none"}var pr=await sb.from("photos").select("*").eq("album_id",ALBUMID).order("added_at",{ascending:false});_ph=pr.data||[];document.getElementById("hcnt").textContent=fa(_ph.length)+" عکس از خاطرات "+a.name+" ✨";if(_ph.length===0){m.textContent="هنوز عکسی در این آلبوم نیست 🧸";return}m.style.display="none";var grid=document.getElementById("grid");for(var i=0;i<_ph.length;i++){(function(i){var p=_ph[i];var f=document.createElement("figure");f.className="p";f.style.setProperty("--t",(((i%5)-2)*1.4)+"deg");if(p.sticker){var sk=document.createElement("span");sk.className="sk";sk.textContent=p.sticker;f.appendChild(sk)}if(p.fav){var fv=document.createElement("span");fv.className="fv";fv.textContent="❤️";f.appendChild(fv)}var im=document.createElement("div");im.className="im";var img=document.createElement("img");img.loading="lazy";img.src=p.url;im.appendChild(img);f.appendChild(im);var fc=document.createElement("figcaption");var c=document.createElement("span");c.className="c";c.textContent=p.caption||"";var d=document.createElement("span");d.className="d";d.textContent=new Date(p.added_at).toLocaleDateString("fa-IR");fc.appendChild(c);fc.appendChild(d);f.appendChild(fc);f.onclick=function(){openLB(i)};grid.appendChild(f);})(i)}}catch(e){m.textContent="خطا در اتصال 😢";m.style.display="block"}}function openLB(i){cur=i;upd();document.getElementById("lb").style.display="flex"}function upd(){var p=_ph[cur];document.getElementById("lbI").src=p.url;document.getElementById("lbC").textContent=p.caption||"";document.getElementById("lbD").textContent=(p.sticker?p.sticker+" · ":"")+new Date(p.added_at).toLocaleDateString("fa-IR");document.getElementById("lbN").textContent=fa(cur+1)+" / "+fa(_ph.length);curId=p.id;loadSocial(p.id);}function step(d){cur=(cur+d+_ph.length)%_ph.length;upd()}document.getElementById("xx").onclick=function(){document.getElementById("lb").style.display="none"};document.getElementById("pv").onclick=function(){step(1)};document.getElementById("nv").onclick=function(){step(-1)};document.addEventListener("keydown",function(e){if(document.getElementById("lb").style.display!=="flex")return;if(e.key==="Escape")document.getElementById("lb").style.display="none";else if(e.key==="ArrowLeft")step(-1);else if(e.key==="ArrowRight")step(1)});boot();</script></body></html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍼 آلبوم تیام جان</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ═══ متغیرهای رنگ (روز/شب) ═══ */
+:root{
+  --bg1:#eaf6fd;--bg2:#f2fbf5;--bg3:#fdf3e7;--bg4:#fdeef0;
+  --text:#123f3a;--text-soft:#4c6b66;--card:rgba(255,255,255,.9);
+  --accent:#ff6b5e;--teal:#14655b;--butter:#ffd34d;
+  --shadow:rgba(18,63,58,.14);
+}
+body.night{
+  --bg1:#0f1729;--bg2:#1a2340;--bg3:#16213e;--bg4:#1a1a2e;
+  --text:#f0f4f8;--text-soft:#94a3b8;--card:rgba(30,41,59,.9);
+  --accent:#ff6b5e;--teal:#5eead4;--butter:#fbbf24;
+  --shadow:rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Vazirmatn',Tahoma,sans-serif;color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(-45deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4));
+  background-size:400% 400%;
+  animation:gradientShift 18s ease infinite;
+  transition:background .5s;
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ═══ حباب‌ها و ستاره‌ها ═══ */
+.bubble{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.5),rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.3);
+  animation:floatUp linear infinite;
+}
+body.night .bubble{
+  background:radial-gradient(circle at 30% 30%,rgba(94,234,212,.2),rgba(94,234,212,.02));
+  border-color:rgba(94,234,212,.2);
+}
+@keyframes floatUp{
+  0%{transform:translateY(110vh) scale(.3);opacity:0}
+  10%{opacity:.7}
+  90%{opacity:.7}
+  100%{transform:translateY(-120px) scale(1);opacity:0}
+}
+.star{
+  position:fixed;background:#fff;border-radius:50%;pointer-events:none;z-index:0;
+  display:none;animation:twinkle ease-in-out infinite;
+}
+body.night .star{display:block}
+@keyframes twinkle{
+  0%,100%{opacity:.15;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.4)}
+}
+
+/* ═══ Confetti و قلب‌ها ═══ */
+.confetti-piece{
+  position:fixed;width:10px;height:14px;top:-20px;z-index:999;pointer-events:none;
+  animation:confettiFall linear forwards;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+}
+.floating-heart{
+  position:fixed;bottom:-30px;z-index:999;pointer-events:none;font-size:28px;
+  animation:heartFloat ease-out forwards;
+}
+@keyframes heartFloat{
+  0%{transform:translateY(0) scale(.5);opacity:0}
+  15%{opacity:1}
+  100%{transform:translateY(-95vh) scale(1.4);opacity:0}
+}
+
+/* ═══ هدر سینمایی ═══ */
+header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
+.cinema-title{
+  font-family:'Lalezar',cursive;font-size:clamp(3rem,10vw,5.5rem);
+  font-weight:400;line-height:1.1;margin-bottom:12px;
+  display:flex;justify-content:center;flex-wrap:wrap;gap:4px;
+}
+.cinema-title .letter{
+  display:inline-block;opacity:0;
+  animation:letterIn .7s cubic-bezier(.34,1.56,.64,1) forwards;
+  background:linear-gradient(135deg,var(--accent),#ff9a6b);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 12px rgba(255,107,94,.3));
+}
+@keyframes letterIn{
+  from{opacity:0;transform:translateY(50px) rotateX(90deg) scale(.5)}
+  to{opacity:1;transform:translateY(0) rotateX(0) scale(1)}
+}
+.quote{
+  font-size:clamp(.95rem,2.5vw,1.2rem);color:var(--text-soft);
+  max-width:600px;margin:0 auto 24px;line-height:1.9;
+  opacity:0;animation:fadeInUp 1s ease .8s forwards;
+}
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.age-counter{
+  display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  background:var(--card);backdrop-filter:blur(10px);
+  border-radius:24px;padding:16px 28px;
+  box-shadow:0 10px 40px var(--shadow);
+  opacity:0;animation:fadeInUp 1s ease 1.1s forwards;
+}
+.age-unit{text-align:center;min-width:58px}
+.age-num{
+  font-family:'Lalezar',cursive;font-size:2rem;color:var(--accent);
+  line-height:1;display:block;
+  transition:transform .3s;
+}
+.age-num.tick{animation:numPop .5s ease}
+@keyframes numPop{
+  0%{transform:scale(1)}50%{transform:scale(1.3);color:var(--butter)}100%{transform:scale(1)}
+}
+.age-label{font-size:.7rem;color:var(--text-soft);font-weight:700}
+
+/* ═══ دکمه‌ی شب/روز ═══ */
+.night-toggle{
+  position:fixed;top:20px;left:20px;z-index:100;
+  width:52px;height:52px;border-radius:50%;border:0;cursor:pointer;
+  background:var(--card);backdrop-filter:blur(10px);
+  font-size:1.5rem;box-shadow:0 8px 24px var(--shadow);
+  transition:transform .3s;
+}
+.night-toggle:hover{transform:scale(1.1) rotate(20deg)}
+
+/* ═══ نوار ابزار ═══ */
+.toolbar{
+  position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:12px;
+  justify-content:center;align-items:center;padding:0 20px 30px;
+}
+.lucky-btn{
+  font-family:'Vazirmatn',sans-serif;font-weight:700;font-size:.95rem;
+  background:linear-gradient(135deg,#a78bfa,#8b5cf6);color:#fff;
+  border:0;border-radius:16px;padding:12px 24px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(139,92,246,.35);transition:.3s;
+  display:flex;align-items:center;gap:8px;
+}
+.lucky-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(139,92,246,.45)}
+.stat-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.stat-chip{
+  background:var(--card);backdrop-filter:blur(10px);
+  border-radius:999px;padding:8px 16px;font-size:.8rem;font-weight:700;
+  color:var(--text-soft);box-shadow:0 4px 16px var(--shadow);
+  display:flex;align-items:center;gap:6px;
+}
+.stat-chip b{color:var(--accent);font-family:'Lalezar',cursive;font-size:1.1rem}
+
+/* ═══ تایم‌لاین ═══ */
+.timeline{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:20px}
+.timeline-line{
+  position:absolute;left:50%;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,transparent,var(--teal),var(--accent),transparent);
+  transform:translateX(-50%);border-radius:2px;
+}
+.tl-item{
+  position:relative;width:50%;padding:20px 40px;
+  opacity:0;transform:translateY(40px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.tl-item.visible{opacity:1;transform:translateY(0)}
+.tl-item:nth-child(odd){left:0;text-align:left}
+.tl-item:nth-child(even){left:50%;text-align:right}
+.tl-dot{
+  position:absolute;top:30px;width:18px;height:18px;border-radius:50%;
+  background:var(--accent);border:4px solid var(--card);
+  box-shadow:0 0 0 3px var(--accent),0 4px 12px var(--shadow);z-index:3;
+}
+.tl-item:nth-child(odd) .tl-dot{right:-11px}
+.tl-item:nth-child(even) .tl-dot{left:-11px}
+.tl-date{
+  display:inline-block;background:var(--butter);color:#7a5a00;
+  font-weight:700;font-size:.75rem;padding:4px 12px;border-radius:999px;
+  margin-bottom:10px;box-shadow:0 3px 10px rgba(255,211,77,.4);
+}
+
+/* ═══ قاب‌های متنوع ═══ */
+.photo-card{
+  position:relative;cursor:pointer;transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
+  opacity:0;animation:photoIn .8s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes photoIn{
+  from{opacity:0;transform:translateY(30px) scale(.8) rotate(var(--rot,0deg))}
+  to{opacity:1;transform:translateY(0) scale(1) rotate(var(--rot,0deg))}
+}
+.photo-card:hover{transform:translateY(-8px) scale(1.03) rotate(0deg)!important;z-index:5}
+.photo-card img{width:100%;display:block;transition:transform .4s}
+
+/* قاب پولاروید */
+.frame-polaroid{background:#fff;padding:12px 12px 44px;box-shadow:0 10px 30px var(--shadow);border-radius:4px}
+.frame-polaroid .photo-caption{
+  position:absolute;bottom:10px;left:0;right:0;text-align:center;
+  font-family:'Lalezar',cursive;font-size:1rem;color:#555;
+}
+.frame-polaroid::before{
+  content:'';position:absolute;top:-14px;left:50%;transform:translateX(-50%) rotate(-3deg);
+  width:90px;height:26px;background:rgba(255,211,77,.75);border-radius:2px;z-index:2;
+}
+/* قاب چسب‌نوار */
+.frame-tape{background:#fff;padding:10px;box-shadow:0 10px 30px var(--shadow);border-radius:6px}
+.frame-tape::before,.frame-tape::after{
+  content:'';position:absolute;width:80px;height:24px;z-index:2;
+  background:rgba(255,107,94,.6);border-radius:2px;
+}
+.frame-tape::before{top:-10px;left:-20px;transform:rotate(-40deg)}
+.frame-tape::after{bottom:-10px;right:-20px;transform:rotate(-40deg)}
+/* قاب گوشه‌گرد */
+.frame-rounded{border-radius:20px;overflow:hidden;box-shadow:0 12px 36px var(--shadow)}
+/* قاب برچسب */
+.frame-sticker{background:#fff;padding:10px;box-shadow:0 10px 30px var(--shadow);border-radius:12px}
+.frame-sticker::after{
+  content:attr(data-sticker);position:absolute;top:-12px;right:-8px;
+  font-size:2rem;filter:drop-shadow(0 3px 6px rgba(0,0,0,.2));z-index:2;
+}
+/* قاب فیلم */
+.frame-film{
+  background:#1a1a1a;padding:24px 12px;border-radius:8px;
+  box-shadow:0 10px 30px var(--shadow);position:relative;
+}
+.frame-film::before,.frame-film::after{
+  content:'';position:absolute;left:8px;right:8px;height:8px;
+  background-image:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 14px);
+  opacity:.6;
+}
+.frame-film::before{top:6px}
+.frame-film::after{bottom:6px}
+.frame-film img{border-radius:2px}
+
+/* ═══ لایت‌باکس ═══ */
+.lightbox{
+  position:fixed;inset:0;background:rgba(10,20,30,.95);z-index:1000;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;backdrop-filter:blur(10px);
+}
+.lightbox.open{display:flex;animation:lbIn .3s ease}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+.lightbox img{
+  max-width:90vw;max-height:60vh;background:#fff;padding:12px;
+  border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.lb-caption{color:#fff;font-family:'Lalezar',cursive;font-size:1.4rem;margin-top:16px;text-align:center}
+.lb-date{color:#94a3b8;font-size:.85rem;margin-top:4px}
+.lb-close{
+  position:absolute;top:20px;right:20px;width:48px;height:48px;border-radius:50%;
+  border:0;background:rgba(255,255,255,.15);color:#fff;font-size:1.4rem;cursor:pointer;
+  transition:.3s;
+}
+.lb-close:hover{background:var(--accent);transform:rotate(90deg)}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:52px;height:52px;border-radius:50%;border:0;
+  background:rgba(255,255,255,.15);color:#fff;font-size:1.6rem;cursor:pointer;transition:.3s;
+}
+.lb-nav:hover{background:var(--accent)}
+.lb-prev{right:20px}.lb-next{left:20px}
+.lb-like{
+  margin-top:20px;background:rgba(255,255,255,.1);border:2px solid var(--accent);
+  color:#fff;border-radius:999px;padding:12px 32px;font-size:1.1rem;font-weight:700;
+  cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:.3s;
+  display:flex;align-items:center;gap:10px;
+}
+.lb-like:hover{background:var(--accent);transform:scale(1.05)}
+.lb-like.liked{background:var(--accent);border-color:var(--accent)}
+.lb-like .count{
+  font-family:'Lalezar',cursive;font-size:1.4rem;
+  transition:transform .3s;
+}
+.lb-like .count.pop{animation:numPop .5s ease}
+
+/* ═══ دفترچه‌ی یادگاری ═══ */
+.memory-book{
+  position:relative;z-index:2;max-width:700px;margin:60px auto;padding:0 20px;
+}
+.memory-book h2{
+  font-family:'Lalezar',cursive;font-size:2.2rem;text-align:center;
+  color:var(--text);margin-bottom:24px;
+}
+.book-page{
+  background:var(--card);backdrop-filter:blur(10px);
+  border-radius:4px 20px 20px 4px;padding:24px;margin-bottom:16px;
+  box-shadow:0 8px 24px var(--shadow);position:relative;
+  background-image:repeating-linear-gradient(transparent,transparent 28px,rgba(20,101,91,.08) 28px,rgba(20,101,91,.08) 29px);
+  border-right:4px solid var(--accent);
+}
+.book-page::before{
+  content:'';position:absolute;top:0;bottom:0;right:20px;width:2px;
+  background:rgba(255,107,94,.3);
+}
+.book-author{
+  font-family:'Lalezar',cursive;font-size:1.1rem;color:var(--teal);
+  margin-bottom:6px;display:flex;align-items:center;gap:8px;
+}
+.book-text{color:var(--text);line-height:1.9;font-size:.95rem;padding-right:10px}
+.book-date{color:var(--text-soft);font-size:.7rem;margin-top:8px;text-align:left}
+.book-empty{text-align:center;color:var(--text-soft);padding:30px;font-size:.95rem}
+.comment-form{
+  background:var(--card);backdrop-filter:blur(10px);
+  border-radius:20px;padding:20px;box-shadow:0 8px 24px var(--shadow);
+  display:flex;flex-direction:column;gap:12px;
+}
+.comment-form input,.comment-form textarea{
+  font-family:'Vazirmatn',sans-serif;width:100%;border:2px solid rgba(20,101,91,.15);
+  border-radius:12px;padding:12px;font-size:.9rem;color:var(--text);
+  background:rgba(255,255,255,.6);resize:none;
+}
+body.night .comment-form input,body.night .comment-form textarea{background:rgba(15,23,42,.6)}
+.comment-form input:focus,.comment-form textarea:focus{outline:none;border-color:var(--teal)}
+.comment-submit{
+  font-family:'Vazirmatn',sans-serif;font-weight:700;
+  background:linear-gradient(135deg,var(--teal),#0d9488);color:#fff;
+  border:0;border-radius:12px;padding:14px;font-size:1rem;cursor:pointer;
+  transition:.3s;
+}
+.comment-submit:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,101,91,.35)}
+
+/* ═══ عکس‌های لایک‌شده ═══ */
+.liked-section{position:relative;z-index:2;max-width:1100px;margin:60px auto;padding:0 20px}
+.liked-section h2{
+  font-family:'Lalezar',cursive;font-size:2.2rem;text-align:center;
+  color:var(--text);margin-bottom:24px;
+}
+.liked-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
+.liked-item{
+  position:relative;border-radius:16px;overflow:hidden;cursor:pointer;
+  box-shadow:0 6px 20px var(--shadow);transition:.3s;
+  aspect-ratio:1;
+}
+.liked-item:hover{transform:translateY(-6px) scale(1.03)}
+.liked-item img{width:100%;height:100%;object-fit:cover}
+.liked-item .badge{
+  position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;
+  border-radius:999px;padding:3px 10px;font-size:.75rem;font-weight:700;
+  box-shadow:0 3px 8px rgba(255,107,94,.4);
+}
+
+/* ═══ Toast ═══ */
+.toast-box{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2000;
+  background:var(--card);backdrop-filter:blur(10px);
+  border-radius:16px;padding:14px 24px;box-shadow:0 10px 40px var(--shadow);
+  font-weight:700;color:var(--text);display:none;align-items:center;gap:10px;
+  border-right:4px solid var(--accent);
+}
+.toast-box.show{display:flex;animation:toastIn .4s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+
+footer{
+  position:relative;z-index:2;text-align:center;padding:40px 20px;
+  color:var(--text-soft);font-size:.85rem;
+}
+
+/* ═══ موبایل ═══ */
+@media(max-width:768px){
+  .timeline-line{left:20px}
+  .tl-item{width:100%;left:0!important;text-align:right!important;padding:16px 16px 16px 50px}
+  .tl-item .tl-dot{left:11px!important;right:auto!important}
+  .age-counter{padding:12px 18px;gap:6px}
+  .age-unit{min-width:48px}
+  .age-num{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- دکمه‌ی شب/روز -->
+<button class="night-toggle" id="nightToggle" title="حالت شب/روز">🌙</button>
+
+<!-- هدر سینمایی -->
+<header>
+  <h1 class="cinema-title" id="cinemaTitle"></h1>
+  <p class="quote" id="randomQuote"></p>
+  <div class="age-counter" id="ageCounter">
+    <div class="age-unit"><span class="age-num" id="ageDays">۰</span><span class="age-label">روز</span></div>
+    <div class="age-unit"><span class="age-num" id="ageHours">۰</span><span class="age-label">ساعت</span></div>
+    <div class="age-unit"><span class="age-num" id="ageMins">۰</span><span class="age-label">دقیقه</span></div>
+    <div class="age-unit"><span class="age-num" id="ageSecs">۰</span><span class="age-label">ثانیه</span></div>
+  </div>
+</header>
+
+<!-- نوار ابزار -->
+<div class="toolbar">
+  <button class="lucky-btn" id="luckyBtn">🎲 <span>شانس بیاور!</span></button>
+  <div class="stat-chips">
+    <div class="stat-chip">📷 <b id="statPhotos">۰</b> عکس</div>
+    <div class="stat-chip">❤️ <b id="statLikes">۰</b> لایک</div>
+    <div class="stat-chip">💬 <b id="statComments">۰</b> یادگاری</div>
+  </div>
+</div>
+
+<!-- تایم‌لاین -->
+<div class="timeline" id="timeline">
+  <div class="timeline-line"></div>
+</div>
+
+<!-- دفترچه‌ی یادگاری -->
+<section class="memory-book">
+  <h2>📖 دفترچه‌ی یادگاری</h2>
+  <div id="bookPages"></div>
+  <form class="comment-form" id="commentForm">
+    <input type="text" id="cName" placeholder="اسمت چیه؟ (اختیاری)">
+    <textarea id="cMsg" rows="3" placeholder="یه یادگاری قشنگ برای تیام بنویس... 🌸"></textarea>
+    <button type="submit" class="comment-submit">🌸 ثبت یادگاری</button>
+  </form>
+</section>
+
+<!-- عکس‌های لایک‌شده -->
+<section class="liked-section" id="likedSection">
+  <h2>❤️ عکس‌های محبوب</h2>
+  <div class="liked-grid" id="likedList"></div>
+</section>
+
+<!-- لایت‌باکس -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+  <button class="lb-nav lb-next" id="lbNext">›</button>
+  <img id="lbImg" alt="">
+  <div class="lb-caption" id="lbCaption"></div>
+  <div class="lb-date" id="lbDate"></div>
+  <button class="lb-like" id="lbLike">
+    <span>❤️</span>
+    <span class="count" id="lbLikeCount">۰</span>
+  </button>
+</div>
+
+<!-- Toast -->
+<div class="toast-box" id="toastBox"></div>
+
+<footer>ساخته‌شده با ❤️ برای تیام جان · هر عکس یک خاطره</footer>
+
+<script>
+// ═══ تنظیمات ═══
+const CFG={url:"https://kabgmypavsagbomdvzga.supabase.co",anon:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthYmdteXBhdnNhZ2JvbWR2emdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0Njc0NzksImV4cCI6MjEwMjA0MzQ3OX0.6kNctpCc7Qmj1bihs9clokk70UzX12-oy-wxlsiJKmY"};
+const ALBUM_ID="bb7c5a06-a2d4-4b1a-8167-410ca42de9e1";
+const BIRTHDAY="2026-07-04T00:00:00";
+const sb=supabase.createClient(CFG.url,CFG.anon);
+const $=s=>document.querySelector(s);
+const fa=n=>Number(n).toLocaleString("fa-IR");
+
+let photos=[],likesMap={},currentLB=-1;
+
+// ═══ جملات تصادفی ═══
+const QUOTES=[
+  "هر عکس، یک تکه از قلب ماست 💛",
+  "تیام جان، دنیای ما با تو قشنگ‌تر شد 🌟",
+  "خاطرات کوچک، گنج‌های بزرگ ✨",
+  "تو بهترین هدیه‌ی زندگی ما هستی 🎁",
+  "هر لبخندت، یک دنیا شادی 🌈",
+  "عکس‌هایت، داستان عشق ما هستند 📖",
+  "با تو، هر روز یک معجزه است 🍼",
+  "تیام جان، ستاره‌ی زندگی ما ⭐",
+  "خاطراتت را قاب کردیم تا همیشه بمانند 🖼️",
+  "تو کوچکترین و بزرگترین عشق ما هستی 💗"
+];
+
+// ═══ قاب‌های تصادفی ═══
+const FRAMES=["frame-polaroid","frame-tape","frame-rounded","frame-sticker","frame-film"];
+const STICKERS=["🧸","🍼","⭐","🌸","🎈","💛","🌙","🦋"];
+
+// ═══ ساخت پس‌زمینه (حباب + ستاره) ═══
+function createBackground(){
+  // حباب‌ها
+  for(let i=0;i<15;i++){
+    const b=document.createElement("div");
+    b.className="bubble";
+    const size=20+Math.random()*60;
+    b.style.width=size+"px";
+    b.style.height=size+"px";
+    b.style.left=Math.random()*100+"vw";
+    b.style.animationDuration=(15+Math.random()*20)+"s";
+    b.style.animationDelay=(Math.random()*20)+"s";
+    document.body.appendChild(b);
+  }
+  // ستاره‌ها
+  for(let i=0;i<40;i++){
+    const s=document.createElement("div");
+    s.className="star";
+    const size=1+Math.random()*3;
+    s.style.width=size+"px";
+    s.style.height=size+"px";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top=Math.random()*100+"vh";
+    s.style.animationDuration=(2+Math.random()*3)+"s";
+    s.style.animationDelay=(Math.random()*3)+"s";
+    document.body.appendChild(s);
+  }
+}
+
+// ═══ هدر سینمایی ═══
+function setupTitle(){
+  const title="تیام جان";
+  const el=$("#cinemaTitle");
+  el.innerHTML="";
+  [...title].forEach((ch,i)=>{
+    const span=document.createElement("span");
+    span.className="letter";
+    span.textContent=ch===" "?"\u00A0":ch;
+    span.style.animationDelay=(i*0.1)+"s";
+    el.appendChild(span);
+  });
+}
+
+// ═══ جمله‌ی تصادفی ═══
+function setQuote(){
+  $("#randomQuote").textContent="« "+QUOTES[Math.floor(Math.random()*QUOTES.length)]+" »";
+}
+
+// ═══ شمارنده‌ی سن زنده ═══
+let lastSecs=-1;
+function updateAge(){
+  const birth=new Date(BIRTHDAY);
+  const now=new Date();
+  let diff=Math.floor((now-birth)/1000);
+  const days=Math.floor(diff/86400);diff%=86400;
+  const hours=Math.floor(diff/3600);diff%=3600;
+  const mins=Math.floor(diff/60);
+  const secs=diff%60;
+  $("#ageDays").textContent=fa(days);
+  $("#ageHours").textContent=fa(hours);
+  $("#ageMins").textContent=fa(mins);
+  const secEl=$("#ageSecs");
+  if(secs!==lastSecs){
+    secEl.textContent=fa(secs);
+    secEl.classList.remove("tick");
+    void secEl.offsetWidth;
+    secEl.classList.add("tick");
+    lastSecs=secs;
+  }
+}
+
+// ═══ Confetti ═══
+function fireConfetti(){
+  const colors=["#ff6b5e","#ffd34d","#5eead4","#a78bfa","#62b6e8","#ffb4c2"];
+  for(let i=0;i<60;i++){
+    const p=document.createElement("div");
+    p.className="confetti-piece";
+    p.style.left=Math.random()*100+"vw";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration=(2.5+Math.random()*2)+"s";
+    p.style.animationDelay=(Math.random()*0.5)+"s";
+    p.style.borderRadius=Math.random()>0.5?"50%":"2px";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),5000);
+  }
+}
+
+// ═══ بارش قلب ═══
+function heartRain(){
+  const hearts=["❤️","💖","💗","💕","💓"];
+  for(let i=0;i<10;i++){
+    const h=document.createElement("div");
+    h.className="floating-heart";
+    h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.left=(10+Math.random()*80)+"vw";
+    h.style.animationDuration=(2+Math.random()*1.5)+"s";
+    h.style.animationDelay=(Math.random()*0.5)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  }
+}
+
+// ═══ Toast ═══
+function toast(msg){
+  const t=$("#toastBox");
+  t.textContent=msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3000);
+}
+
+// ═══ بارگذاری داده‌ها ═══
+async function loadData(){
+  try{
+    const [{data:ph},{data:lk},{data:cm}]=await Promise.all([
+      sb.from("photos").select("*").eq("album_id",ALBUM_ID).order("added_at",{ascending:false}),
+      sb.from("likes").select("*"),
+      sb.from("comments").select("*").order("created_at",{ascending:false})
+    ]);
+    photos=ph||[];
+    likesMap={};
+    (lk||[]).forEach(l=>{likesMap[l.photo_id]=(likesMap[l.photo_id]||0)+1;});
+    renderTimeline();
+    renderComments(cm||[]);
+    renderLiked();
+    $("#statPhotos").textContent=fa(photos.length);
+    $("#statLikes").textContent=fa((lk||[]).length);
+    $("#statComments").textContent=fa((cm||[]).length);
+  }catch(e){
+    console.error(e);
+    toast("❌ خطا در بارگذاری");
+  }
+}
+
+// ═══ نمایش تایم‌لاین ═══
+function renderTimeline(){
+  const tl=$("#timeline");
+  tl.querySelectorAll(".tl-item").forEach(e=>e.remove());
+  if(!photos.length){
+    const empty=document.createElement("div");
+    empty.style.cssText="text-align:center;color:var(--text-soft);padding:40px;position:relative;z-index:2";
+    empty.textContent="هنوز عکسی در آلبوم نیست 🧸";
+    tl.appendChild(empty);
+    return;
+  }
+  photos.forEach((p,i)=>{
+    const item=document.createElement("div");
+    item.className="tl-item";
+    const frame=FRAMES[i%FRAMES.length];
+    const rot=(Math.random()*4-2).toFixed(1);
+    const sticker=STICKERS[Math.floor(Math.random()*STICKERS.length)];
+    const likeCount=likesMap[p.id]||0;
+    let frameHTML="";
+    if(frame==="frame-polaroid"){
+      frameHTML=`<div class="photo-card ${frame}" style="--rot:${rot}deg"><img src="${p.url}" alt=""><div class="photo-caption">${p.caption||"تیام جان"}</div></div>`;
+    }else if(frame==="frame-sticker"){
+      frameHTML=`<div class="photo-card ${frame}" data-sticker="${sticker}" style="--rot:${rot}deg"><img src="${p.url}" alt=""></div>`;
+    }else{
+      frameHTML=`<div class="photo-card ${frame}" style="--rot:${rot}deg"><img src="${p.url}" alt=""></div>`;
+    }
+    item.innerHTML=`
+      <div class="tl-dot"></div>
+      <div class="tl-date">${faDate(p.added_at)} ${likeCount>0?"· ❤️"+fa(likeCount):""}</div>
+      ${frameHTML}
+    `;
+    item.querySelector(".photo-card").onclick=()=>openLB(i);
+    tl.appendChild(item);
+  });
+  // انیمیشن ورود با IntersectionObserver
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("visible");
+        const card=entry.target.querySelector(".photo-card");
+        if(card)card.style.animationDelay=(Math.random()*0.3)+"s";
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.1});
+  tl.querySelectorAll(".tl-item").forEach(item=>observer.observe(item));
+}
+
+function faDate(t){
+  return new Date(t).toLocaleDateString("fa-IR",{year:"numeric",month:"long",day:"numeric"});
+}
+
+// ═══ لایت‌باکس ═══
+function openLB(i){
+  currentLB=i;
+  const p=photos[i];
+  $("#lbImg").src=p.url;
+  $("#lbCaption").textContent=p.caption||"تیام جان";
+  $("#lbDate").textContent=faDate(p.added_at);
+  updateLBLike();
+  $("#lightbox").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeLB(){
+  $("#lightbox").classList.remove("open");
+  document.body.style.overflow="";
+  currentLB=-1;
+}
+function lbStep(d){
+  if(!photos.length)return;
+  currentLB=(currentLB+d+photos.length)%photos.length;
+  openLB(currentLB);
+}
+function updateLBLike(){
+  const p=photos[currentLB];
+  const count=likesMap[p.id]||0;
+  const liked=localStorage.getItem("liked_"+p.id)==="1";
+  $("#lbLikeCount").textContent=fa(count);
+  $("#lbLike").classList.toggle("liked",liked);
+}
+$("#lbClose").onclick=closeLB;
+$("#lbPrev").onclick=()=>lbStep(-1);
+$("#lbNext").onclick=()=>lbStep(1);
+$("#lightbox").onclick=e=>{if(e.target===$("#lightbox"))closeLB();};
+$("#lbLike").onclick=async()=>{
+  const p=photos[currentLB];
+  if(localStorage.getItem("liked_"+p.id)==="1"){
+    toast("قبلاً لایک کردی 💗");
+    return;
+  }
+  try{
+    const {error}=await sb.from("likes").insert({photo_id:p.id});
+    if(error)throw error;
+    localStorage.setItem("liked_"+p.id,"1");
+    likesMap[p.id]=(likesMap[p.id]||0)+1;
+    const countEl=$("#lbLikeCount");
+    countEl.textContent=fa(likesMap[p.id]);
+    countEl.classList.remove("pop");
+    void countEl.offsetWidth;
+    countEl.classList.add("pop");
+    $("#lbLike").classList.add("liked");
+    heartRain();
+    fireConfetti();
+    $("#statLikes").textContent=fa(parseInt($("#statLikes").textContent.replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)))+1||likesMap[p.id]);
+    loadData();
+  }catch(e){
+    toast("❌ خطا در لایک");
+  }
+};
+document.addEventListener("keydown",e=>{
+  if(currentLB<0)return;
+  if(e.key==="Escape")closeLB();
+  if(e.key==="ArrowLeft")lbStep(1);
+  if(e.key==="ArrowRight")lbStep(-1);
+});
+
+// ═══ دفترچه‌ی یادگاری ═══
+function renderComments(comments){
+  const box=$("#bookPages");
+  box.innerHTML="";
+  if(!comments.length){
+    box.innerHTML='<div class="book-empty">هنوز یادگاری ثبت نشده. اولین نفر باش! 🌸</div>';
+    return;
+  }
+  comments.slice(0,30).forEach(c=>{
+    const page=document.createElement("div");
+    page.className="book-page";
+    page.innerHTML=`
+      <div class="book-author">🌸 ${c.author||"مهمان"}</div>
+      <div class="book-text">${c.message||""}</div>
+      <div class="book-date">${faDate(c.created_at)}</div>
+    `;
+    box.appendChild(page);
+  });
+}
+$("#commentForm").onsubmit=async e=>{
+  e.preventDefault();
+  const name=$("#cName").value.trim()||"مهمان";
+  const msg=$("#cMsg").value.trim();
+  if(!msg){toast("یه چیزی بنویس! 🌸");return;}
+  try{
+    const {error}=await sb.from("comments").insert({photo_id:ALBUM_ID,author:name,message:msg});
+    if(error)throw error;
+    $("#cMsg").value="";
+    toast("🌸 یادگاری‌ات ثبت شد!");
+    fireConfetti();
+    loadData();
+  }catch(e){
+    toast("❌ خطا در ثبت یادگاری");
+  }
+};
+
+// ═══ عکس‌های لایک‌شده ═══
+function renderLiked(){
+  const box=$("#likedList");
+  box.innerHTML="";
+  const likedPhotos=photos.filter(p=>(likesMap[p.id]||0)>0)
+    .sort((a,b)=>(likesMap[b.id]||0)-(likesMap[a.id]||0))
+    .slice(0,12);
+  if(!likedPhotos.length){
+    $("#likedSection").style.display="none";
+    return;
+  }
+  $("#likedSection").style.display="block";
+  likedPhotos.forEach(p=>{
+    const idx=photos.findIndex(x=>x.id===p.id);
+    const item=document.createElement("div");
+    item.className="liked-item";
+    item.innerHTML=`<img src="${p.url}" alt=""><div class="badge">❤️ ${fa(likesMap[p.id])}</div>`;
+    item.onclick=()=>openLB(idx);
+    box.appendChild(item);
+  });
+}
+
+// ═══ شانس بیاور ═══
+$("#luckyBtn").onclick=()=>{
+  if(!photos.length){toast("هنوز عکسی نیست! 🧸");return;}
+  fireConfetti();
+  setTimeout(()=>{
+    const i=Math.floor(Math.random()*photos.length);
+    openLB(i);
+  },600);
+};
+
+// ═══ حالت شب/روز ═══
+$("#nightToggle").onclick=()=>{
+  document.body.classList.toggle("night");
+  const isNight=document.body.classList.contains("night");
+  $("#nightToggle").textContent=isNight?"☀️":"🌙";
+  localStorage.setItem("nightMode",isNight?"1":"0");
+};
+// بارگذاری حالت ذخیره‌شده
+if(localStorage.getItem("nightMode")==="1"){
+  document.body.classList.add("night");
+  $("#nightToggle").textContent="☀️";
+}
+
+// ═══ شروع ═══
+createBackground();
+setupTitle();
+setQuote();
+updateAge();
+setInterval(updateAge,1000);
+loadData();
+fireConfetti(); // Confetti اولیه هنگام باز شدن صفحه
+</script>
+</body>
+</html>
