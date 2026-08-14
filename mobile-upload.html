@@ -2,147 +2,123 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="تیام جان">
-<meta name="mobile-web-app-capable" content="yes">
 <title>📱 آپلود عکس تیام جان</title>
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ff6b5e%22 width=%22100%22 height=%22100%22 rx=%2220%22/><text y=%22.9em%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2270%22>🍼</text></svg>">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Tahoma,sans-serif;color:#123f3a;
-  background:linear-gradient(135deg,#eaf6fd 0%,#f2fbf5 40%,#fdf3e7 75%,#fdeef0 100%);
-  padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom) 16px;min-height:100vh}
-h1{font-size:1.5rem;text-align:center;margin:16px 0 20px;color:#14655b;font-weight:900}
+body{font-family:-apple-system,Tahoma,sans-serif;color:#123f3a;
+  background:linear-gradient(135deg,#eaf6fd,#f2fbf5 40%,#fdf3e7 75%,#fdeef0);
+  padding:16px;min-height:100vh}
+h1{font-size:1.4rem;text-align:center;margin:14px 0 18px;color:#14655b;font-weight:900}
 h1 b{color:#ff6b5e}
 .container{max-width:500px;margin:0 auto}
-.card{background:#fff;border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(18,63,58,.12);margin-bottom:16px}
-.card h2{font-size:1rem;margin-bottom:14px;color:#14655b;font-weight:700}
+.card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(18,63,58,.12);margin-bottom:14px}
 .upload-btn{display:block;width:100%;background:linear-gradient(135deg,#ff8a5c,#ff6b5e);color:#fff;
-  border:0;border-radius:16px;padding:18px;font-size:1rem;font-weight:700;cursor:pointer;
-  box-shadow:0 8px 20px rgba(255,107,94,.35);font-family:inherit;margin-bottom:12px;
-  -webkit-appearance:none;appearance:none}
-.upload-btn:active{transform:translateY(1px);opacity:.9}
+  border:0;border-radius:14px;padding:16px;font-size:1rem;font-weight:700;cursor:pointer;
+  font-family:inherit;margin-bottom:10px;-webkit-appearance:none}
 .upload-btn:disabled{opacity:.6}
 .file-input{display:none}
-.status{padding:12px;border-radius:12px;margin:12px 0;font-size:.88rem;line-height:1.7;display:none;word-break:break-word}
+.status{padding:12px;border-radius:12px;margin:10px 0;font-size:.85rem;line-height:1.7;display:none;word-break:break-word}
 .status.ok{display:block;background:#e8f7ee;color:#1d7a35}
 .status.err{display:block;background:#fdecea;color:#c0392b}
 .status.info{display:block;background:#eef4fb;color:#2c5f8a}
-.preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;margin-top:14px}
-.preview img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;box-shadow:0 3px 8px rgba(0,0,0,.12)}
-.counter{text-align:center;color:#4c6b66;font-size:.85rem;margin-top:10px}
-.btn-secondary{background:#fff;border:2px solid #14655b;color:#14655b;border-radius:14px;padding:14px;
-  font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;
-  -webkit-appearance:none;appearance:none}
-.btn-secondary:active{background:#e3f2ee}
-.pwa-tip{background:#fff3cd;border:2px solid #f2c14e;border-radius:14px;padding:14px;font-size:.85rem;
-  line-height:1.8;color:#8a6100;margin-top:14px;text-align:center}
-.pwa-tip b{color:#5c4300}
+.log{background:#1e293b;color:#94e2d5;border-radius:12px;padding:12px;font-size:.72rem;
+  font-family:monospace;max-height:250px;overflow:auto;margin-top:12px;white-space:pre-wrap;
+  direction:ltr;text-align:left;line-height:1.6}
+.preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;margin-top:12px}
+.preview img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
 </style>
 </head>
 <body>
 <div class="container">
   <h1>📱 آپلود عکس <b>تیام جان</b></h1>
-  
   <div class="card">
-    <h2>📷 عکس‌ها را انتخاب کن</h2>
     <button class="upload-btn" id="btnUpload">📸 انتخاب عکس از گالری</button>
     <button class="upload-btn" id="btnCamera">📷 گرفتن عکس با دوربین</button>
     <input type="file" class="file-input" id="fileInput" accept="image/*" multiple>
     <input type="file" class="file-input" id="cameraInput" accept="image/*" capture="environment">
     <div id="preview" class="preview"></div>
-    <div class="counter" id="counter"></div>
     <div class="status" id="status"></div>
-  </div>
-
-  <div class="card">
-    <h2>🔗 مشاهده‌ی آلبوم لایو</h2>
-    <button class="btn-secondary" id="btnViewLive">👀 باز کردن آلبوم</button>
-    <div class="pwa-tip">
-      <b>💡 برای دسترسی سریع:</b><br>
-      در Safari، دکمه‌ی <b>اشتراک 📤</b> را بزن → <b>افزودن به صفحه‌ی اصلی</b> را انتخاب کن.<br>
-      از این به بعد از آیکون روی صفحه‌ی گوشی بازش می‌کنی. 🎉
-    </div>
+    <div class="log" id="log"></div>
   </div>
 </div>
-
 <script>
 const CFG={url:"https://kabgmypavsagbomdvzga.supabase.co",anon:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthYmdteXBhdnNhZ2JvbWR2emdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0Njc0NzksImV4cCI6MjEwMjA0MzQ3OX0.6kNctpCc7Qmj1bihs9clokk70UzX12-oy-wxlsiJKmY"};
 const ALBUM_ID="bb7c5a06-a2d4-4b1a-8167-410ca42de9e1";
 const BUCKET="album-photos";
 const sb=supabase.createClient(CFG.url,CFG.anon);
-
 const $=s=>document.querySelector(s);
 const fa=n=>Number(n).toLocaleString("fa-IR");
 
+function log(msg){
+  const el=$('#log');
+  el.textContent+='['+new Date().toLocaleTimeString('fa-IR')+'] '+msg+'\n';
+  el.scrollTop=el.scrollHeight;
+}
 function setStatus(msg,type){
   const s=$('#status');
   s.className='status '+(type||'info');
   s.textContent=msg;
 }
 
-function showPreview(files){
-  const p=$('#preview');
-  p.innerHTML='';
-  if(!files.length){$('#counter').textContent='';return;}
-  Array.from(files).forEach(f=>{
-    const img=document.createElement('img');
-    img.src=URL.createObjectURL(f);
-    p.appendChild(img);
-  });
-  $('#counter').textContent=fa(files.length)+' عکس انتخاب شد';
-}
+log('✅ صفحه لود شد');
+log('🔗 URL: '+CFG.url);
+log('📁 ALBUM_ID: '+ALBUM_ID);
 
-async function processFile(f){
-  return new Promise(res=>{
-    const img=new Image();
-    const url=URL.createObjectURL(f);
-    img.onload=()=>{
-      const w=img.naturalWidth,h=img.naturalHeight;
-      const M=1400,s=Math.min(1,M/Math.max(w,h));
-      const c=document.createElement('canvas');
-      c.width=Math.max(1,Math.round(w*s));
-      c.height=Math.max(1,Math.round(h*s));
-      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-      URL.revokeObjectURL(url);
-      c.toBlob(b=>res(b),'image/jpeg',.85);
-    };
-    img.onerror=()=>{URL.revokeObjectURL(url);res(null);};
-    img.src=url;
-  });
-}
+$('#btnUpload').onclick=()=>$('#fileInput').click();
+$('#btnCamera').onclick=()=>$('#cameraInput').click();
+$('#fileInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
+$('#cameraInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
 
 async function uploadFiles(files){
-  const list=Array.from(files).filter(f=>f.type.startsWith('image/'));
-  if(!list.length){setStatus('فایل عکس انتخاب نشده','err');return;}
+  const list=Array.from(files);
+  log('📥 تعداد فایل‌های انتخاب‌شده: '+list.length);
+  if(!list.length){setStatus('فایلی انتخاب نشد','err');return;}
+  
+  list.forEach((f,i)=>log('  فایل '+fa(i+1)+': '+f.name+' | '+f.type+' | '+Math.round(f.size/1024)+'KB'));
   
   $('#btnUpload').disabled=true;
   $('#btnCamera').disabled=true;
-  setStatus('⏳ در حال آپلود '+fa(list.length)+' عکس...','info');
   
-  let success=0;
+  let success=0,fail=0;
   for(let i=0;i<list.length;i++){
+    const f=list[i];
     try{
-      setStatus('📤 آپلود عکس '+fa(i+1)+' از '+fa(list.length)+'...','info');
-      const blob=await processFile(list[i]);
-      if(!blob){setStatus('❌ عکس '+fa(i+1)+' قابل پردازش نبود','err');continue;}
+      setStatus('📤 آپلود '+fa(i+1)+' از '+fa(list.length)+'...','info');
+      log('🔄 شروع آپلود: '+f.name);
+      
+      const blob=await processFile(f);
+      log('✅ پردازش عکس تمام شد، سایز: '+Math.round(blob.size/1024)+'KB');
+      
       const id='p'+Date.now()+'-'+Math.random().toString(16).slice(2,10);
       const path=ALBUM_ID+'/'+id+'.jpg';
-      const {error:upErr}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'3600',upsert:false});
-      if(upErr)throw upErr;
+      log('📤 آپلود به storage: '+path);
+      
+      const {error:upErr}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg'});
+      if(upErr){
+        log('❌ خطای storage: '+upErr.message);
+        throw upErr;
+      }
+      log('✅ آپلود storage موفق');
+      
       const {data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+      log('🔗 publicUrl: '+publicUrl);
+      
       const {error:dbErr}=await sb.from('photos').insert({
         id,album_id:ALBUM_ID,path,url:publicUrl,caption:'',
-        added_at:new Date(Date.now()+i).toISOString()
+        added_at:new Date().toISOString()
       });
-      if(dbErr)throw dbErr;
+      if(dbErr){
+        log('❌ خطای database: '+dbErr.message);
+        throw dbErr;
+      }
+      log('✅ ثبت در database موفق');
       success++;
     }catch(e){
-      console.error('Upload error:',e);
+      fail++;
+      log('❌ خطای کلی: '+(e.message||JSON.stringify(e)));
       setStatus('❌ خطا: '+(e.message||e),'err');
     }
   }
@@ -150,19 +126,43 @@ async function uploadFiles(files){
   $('#btnUpload').disabled=false;
   $('#btnCamera').disabled=false;
   if(success>0){
-    setStatus('✅ '+fa(success)+' عکس اضافه شد! الان توی آلبوم لایو هست.','ok');
-    $('#preview').innerHTML='';
-    $('#counter').textContent='';
+    setStatus('✅ '+fa(success)+' عکس آپلود شد!'+(fail>0?' ('+fa(fail)+' خطا)':''),'ok');
+    log('🎉 تمام شد: '+success+' موفق، '+fail+' ناموفق');
   }else{
-    setStatus('❌ هیچ عکسی آپلود نشد','err');
+    setStatus('❌ هیچ عکسی آپلود نشد. لاگ پایین را ببین و برایم بفرست.','err');
   }
 }
 
-$('#btnUpload').onclick=()=>$('#fileInput').click();
-$('#btnCamera').onclick=()=>$('#cameraInput').click();
-$('#fileInput').onchange=e=>{showPreview(e.target.files);uploadFiles(e.target.files);e.target.value='';};
-$('#cameraInput').onchange=e=>{showPreview(e.target.files);uploadFiles(e.target.files);e.target.value='';};
-$('#btnViewLive').onclick=()=>window.open('https://dksservice.github.io/tiami/','_blank');
+async function processFile(f){
+  log('🖼 پردازش عکس شروع شد: '+f.type);
+  try{
+    return await new Promise((res,rej)=>{
+      const img=new Image();
+      const url=URL.createObjectURL(f);
+      img.onload=()=>{
+        try{
+          const w=img.naturalWidth,h=img.naturalHeight;
+          log('  ابعاد: '+w+'x'+h);
+          const M=1400,s=Math.min(1,M/Math.max(w,h));
+          const c=document.createElement('canvas');
+          c.width=Math.max(1,Math.round(w*s));
+          c.height=Math.max(1,Math.round(h*s));
+          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+          URL.revokeObjectURL(url);
+          c.toBlob(b=>{
+            if(b)res(b);
+            else rej(new Error('toBlob null شد'));
+          },'image/jpeg',.85);
+        }catch(e){rej(e);}
+      };
+      img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('Image load fail'));};
+      img.src=url;
+    });
+  }catch(e){
+    log('⚠️ پردازش fail شد، فایل اصلی را آپلود می‌کنم: '+e.message);
+    return f;
+  }
+}
 </script>
 </body>
 </html>
