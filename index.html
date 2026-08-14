@@ -591,16 +591,6 @@ function renderLiked(){
     box.appendChild(item);
   });
 }
-
-$("#luckyBtn").onclick=()=>{
-  if(!photos.length){toast("هنوز عکسی نیست! 🧸");return;}
-  fireConfetti();
-  setTimeout(()=>{
-    const i=Math.floor(Math.random()*photos.length);
-    openLB(i);
-  },600);
-};
-
 $("#nightToggle").onclick=()=>{
   document.body.classList.toggle("night");
   const isNight=document.body.classList.contains("night");
