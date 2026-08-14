@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آلبوم تیام جان | نسخه‌ی زنده</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--ink:#123f3a;--ink-soft:#4c6b66;--teal:#14655b;--teal-l:#e3f2ee;--coral:#ff6b5e;--coral-d:#e8554a;--butter:#ffd34d;--butter-l:#fff3cd;}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{font-family:'Vazirmatn',sans-serif;color:var(--ink);min-height:100vh;
+  background:linear-gradient(160deg,#eaf6fd 0%,#f2fbf5 45%,#fdf8ef 100%);background-attachment:fixed;overflow-x:hidden;}
+.dots{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(20,101,91,.09) 1.6px,transparent 1.6px);background-size:28px 28px;}
+.sun{position:fixed;top:-46px;left:-46px;width:170px;height:170px;border-radius:50%;
+  background:radial-gradient(circle,#ffe28a 0%,#ffd34d 60%,rgba(255,211,77,0) 72%);pointer-events:none;z-index:0;}
+.bunting{position:relative;z-index:3;width:100%;display:flex;justify-content:center;gap:2px;
+  padding:0 8px;border-top:3px solid #b98a4e;overflow:hidden;height:46px;}
+.flag{width:34px;height:38px;clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top center;animation:sway 3s ease-in-out infinite alternate;flex-shrink:0;}
+@keyframes sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+.wrap{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:20px 20px 60px;}
+.panel{background:#fff;border-radius:22px;box-shadow:0 14px 34px rgba(18,63,58,.13);padding:2rem;max-width:640px;margin:40px auto;}
+.panel h1{font-family:'Lalezar',cursive;font-weight:400;font-size:2.1rem;margin-bottom:.5rem;}
+.panel p{color:var(--ink-soft);line-height:2.1;font-size:.92rem;}
+.panel label{display:block;font-weight:700;font-size:.85rem;margin:1rem 0 .3rem;color:var(--teal);}
+input[type=text],input[type=email],input[type=password],input[type=url]{font-family:inherit;width:100%;border:2px solid var(--teal-l);
+  border-radius:12px;padding:.65rem .9rem;font-size:.93rem;color:var(--ink);background:#fff;}
+input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px rgba(20,101,91,.12);}
+.btn{font-family:inherit;font-weight:800;border:0;cursor:pointer;border-radius:16px;
+  padding:.85rem 1.5rem;font-size:1rem;transition:translate .2s,box-shadow .2s;
+  display:inline-flex;align-items:center;gap:.5rem;}
+.btn:active{translate:0 1px}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn-p{background:linear-gradient(135deg,#ff8a5c,#ff6b5e);color:#fff;box-shadow:0 10px 24px rgba(255,107,94,.38);}
+.btn-p:hover{translate:0 -3px}
+.btn-gh{background:#24292f;color:#fff;}
+.btn-gh:hover{translate:0 -3px}
+.btn-g{background:#fff;border:2px solid #cfe4de;color:var(--teal);}
+.btn-g:hover{translate:0 -2px;border-color:var(--teal)}
+.btn-sm{padding:.5rem .9rem;font-size:.85rem;border-radius:12px;}
+.setup-msg{margin-top:1rem;font-size:.88rem;line-height:1.9;padding:.7rem 1rem;border-radius:12px;display:none;}
+.setup-msg.ok{display:block;background:#e8f7ee;color:#1d7a35;}
+.setup-msg.err{display:block;background:#fdecea;color:#c0392b;word-break:break-word;}
+.setup-msg.info{display:block;background:#eef4fb;color:#2c5f8a;}
+.cleaned-url{font-size:.78rem;color:#8aa6a1;margin-top:.3rem;direction:ltr;text-align:left;}
+.hero{padding:30px 0 6px;}
+.kicker{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:2px solid var(--teal-l);
+  color:var(--teal);font-weight:700;font-size:.85rem;padding:.35rem .95rem;border-radius:999px;}
+h1.big{font-family:'Lalezar',cursive;font-weight:400;font-size:clamp(2.4rem,6vw,4rem);line-height:1.2;margin:.5rem 0 .2rem;}
+h1.big .name{color:var(--coral-d);}
+.age-badge{display:inline-flex;margin-top:.5rem;background:var(--butter-l);border:2px solid #f2c14e;color:#8a6100;
+  padding:.4rem 1rem;border-radius:999px;font-weight:800;font-size:.88rem;flex-wrap:wrap;}
+.topbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1.1rem 0;}
+.topbar .grow{flex:1}
+.user-chip{font-size:.78rem;background:var(--teal-l);color:var(--teal);border-radius:999px;padding:.35rem .85rem;font-weight:700;}
+.live-panel{background:#fff;border:3px solid var(--teal);border-radius:22px;padding:1.2rem 1.4rem;
+  margin-bottom:1.2rem;box-shadow:0 12px 30px rgba(20,101,91,.16);}
+.live-panel>b{color:var(--teal);font-size:1.05rem;}
+.lp-sub{color:var(--ink-soft);font-size:.85rem;margin:.4rem 0 .8rem;line-height:2;}
+.lp-status{font-size:.9rem;font-weight:700;color:var(--teal);margin:.5rem 0;line-height:1.9;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.lp-status.ok{color:#1d7a35;animation:none;}
+.lp-status.err{color:#c0392b;animation:none;}
+.lp-result{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:.6rem 0;}
+.lp-result input{flex:1;min-width:170px;direction:ltr;text-align:left;font-family:inherit;
+  border:2px solid #f2c14e;background:var(--butter-l);border-radius:12px;padding:.6rem .9rem;
+  font-size:.8rem;color:#6b4c00;font-weight:700;}
+.lp-note{font-size:.76rem;color:#8aa6a1;line-height:1.9;margin-top:.6rem;border-top:1px dashed #d7e7e2;padding-top:.6rem;}
+.lp-tip{font-size:.8rem;color:#2c5f8a;background:#eef4fb;border-radius:12px;padding:.7rem 1rem;margin:.6rem 0;line-height:1.9;}
+.gh-note{font-size:.76rem;color:#8aa6a1;line-height:1.9;margin-top:.3rem;}
+.activity-panel{background:#fff;border:2px solid #f2c14e;border-radius:22px;padding:1.1rem 1.3rem;margin-bottom:1.2rem;box-shadow:0 10px 26px rgba(242,193,78,.14);}
+.activity-panel>b{color:#8a6100;font-size:1rem;display:block;margin-bottom:.7rem;}
+.act-item{display:flex;gap:.7rem;align-items:center;padding:.55rem 0;border-bottom:1px solid #f5efe0;}
+.act-item:last-child{border-bottom:none}
+.act-item img{width:48px;height:48px;object-fit:cover;border-radius:12px;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.12);}
+.act-txt{font-size:.84rem;line-height:1.7;color:var(--ink);}
+.act-txt small{display:block;color:#a0956f;font-size:.7rem;}
+.stats{display:flex;flex-wrap:wrap;gap:.55rem;margin:4px 0 10px;}
+.stat{background:#fff;border:2px solid var(--teal-l);border-radius:999px;padding:.35rem .95rem;
+  font-size:.85rem;font-weight:700;color:var(--ink-soft);}
+.stat b{color:var(--teal);}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:14px 0;}
+.chip{font-family:inherit;border:2px solid #d7e7e2;background:#fff;border-radius:999px;
+  padding:.42rem .95rem;cursor:pointer;font-weight:700;font-size:.88rem;color:#3a655e;transition:.2s;}
+.chip:hover{translate:0 -2px;border-color:var(--teal);}
+.chip.on{background:var(--teal);color:#fff;border-color:var(--teal);}
+.toolbar .grow{flex:1;}
+.sort-btn{font-family:inherit;background:var(--butter-l);border:2px solid #f2c14e;color:#8a6100;
+  border-radius:999px;padding:.42rem .95rem;font-weight:700;font-size:.85rem;cursor:pointer;}
+#drop{border:3px dashed #9fd0c6;border-radius:26px;background:rgba(255,255,255,.72);
+  padding:1.8rem 1.5rem;text-align:center;cursor:pointer;transition:.25s;}
+#drop:hover,body.dragging #drop{border-color:var(--coral);background:#fff6f1;}
+#drop b{color:var(--teal);}
+#gallery{columns:240px;column-gap:20px;margin-top:22px;}
+.polaroid{background:#fff;padding:10px 10px 12px;border-radius:5px;margin:0 0 20px;
+  break-inside:avoid;position:relative;box-shadow:0 8px 20px rgba(18,63,58,.13);
+  rotate:var(--tilt,0deg);transition:rotate .35s,translate .35s,box-shadow .35s;}
+.polaroid:hover{rotate:0deg;translate:0 -7px;box-shadow:0 20px 38px rgba(18,63,58,.22);z-index:2;}
+.tape{position:absolute;top:-11px;left:50%;translate:-50% 0;width:88px;height:24px;
+  background:var(--tape,#ffd34d);opacity:.85;rotate:-3deg;border-radius:2px;z-index:3;}
+.ph{overflow:hidden;background:#eef4f2;position:relative;line-height:0;}
+.ph img{width:100%;display:block;cursor:zoom-in;}
+.sticker-badge{position:absolute;top:8px;right:8px;font-size:1.7rem;z-index:2;}
+.fav-heart{position:absolute;top:8px;left:8px;font-size:1.2rem;z-index:2;}
+.acts{position:absolute;bottom:10px;left:10px;display:flex;gap:5px;z-index:4;
+  opacity:0;translate:0 8px;transition:.25s;}
+.polaroid:hover .acts{opacity:1;translate:0 0;}
+.acts button{width:32px;height:32px;border-radius:50%;border:0;background:#fffdf6;cursor:pointer;
+  font-size:.95rem;box-shadow:0 3px 8px rgba(0,0,0,.22);transition:.15s;}
+.acts button:hover{scale:1.18;}
+figcaption{display:flex;justify-content:space-between;gap:8px;padding-top:11px;align-items:baseline;}
+.cap{font-weight:600;font-size:.92rem;color:#214f49;flex:1;outline:none;line-height:1.7;
+  border-bottom:1px dashed transparent;min-height:1.2em;}
+.cap:focus{border-color:#f2b84b;background:#fffbe9;}
+.cap:empty::before{content:'یه یادگاری بنویس…';color:#a9c3bd;font-weight:400;}
+.pdate{font-size:.7rem;color:#8aa6a1;white-space:nowrap;}
+.empty-msg{text-align:center;color:var(--ink-soft);padding:1.6rem;font-size:.92rem;}
+#lb{position:fixed;inset:0;z-index:50;background:rgba(10,32,29,.92);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+#lb img{max-width:min(88vw,860px);max-height:52vh;border-radius:8px;background:#fff;padding:10px;
+  box-shadow:0 30px 70px rgba(0,0,0,.5);}
+.lb-cap{color:#fff;margin-top:12px;font-weight:700;font-size:1.05rem;text-align:center;}
+.lb-meta{color:#9fc5be;font-size:.85rem;margin-top:.3rem;}
+.lb-x{position:absolute;top:18px;left:18px;width:46px;height:46px;border-radius:50%;
+  border:0;background:#fff;font-size:1.2rem;cursor:pointer;}
+.lb-nav{position:absolute;top:40%;translate:0 -50%;width:52px;height:52px;border-radius:50%;border:0;
+  background:#fff;font-size:1.5rem;cursor:pointer;}
+.lb-prev{right:18px}.lb-next{left:18px}
+.lb-count{color:#9fc5be;font-size:.8rem;font-weight:700;margin-top:.4rem;}
+#toasts{position:fixed;bottom:22px;left:50%;translate:-50% 0;z-index:80;display:flex;
+  flex-direction:column;gap:.5rem;align-items:center;}
+.toast{background:var(--ink);color:#fff;padding:.7rem 1.3rem;border-radius:14px;font-size:.9rem;
+  font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,.3);max-width:90vw;text-align:center;}
+footer{margin-top:50px;text-align:center;color:#7a9790;font-size:.85rem;}
+@media(max-width:820px){.panel{padding:1.4rem;margin:20px auto;}}
+</style>
+</head>
+<body>
+<div class="dots"></div><div class="sun"></div>
+<div class="bunting" id="bunting"></div>
+
+<div class="wrap">
+  <section id="scrSetup" hidden>
+    <div class="panel">
+      <h1>☁️ اتصال به فضای ابری</h1>
+      <p><b>راهنما:</b> در کادر اول <b>آدرس مرورگرت</b> را از داشبورد سوپابیس پیست کن؛ خودم آدرس درست را می‌سازم. کلید را هم از <b>API Keys → Publishable key</b> بگیر.</p>
+      <label>آدرس (از داشبورد سوپابیس کپی کن)</label>
+      <input type="text" id="cfgUrl" placeholder="https://supabase.com/dashboard/project/... یا https://xxx.supabase.co" dir="ltr">
+      <div class="cleaned-url" id="cleanedUrl"></div>
+      <label>کلید (Publishable key)</label>
+      <input type="text" id="cfgKey" placeholder="sb_publishable_..." dir="ltr">
+      <div style="margin-top:1.2rem;">
+        <button class="btn btn-p" id="btnSaveCfg">💾 ذخیره و تست اتصال</button>
+      </div>
+      <div class="setup-msg" id="setupMsg"></div>
+    </div>
+  </section>
+
+  <section id="scrLogin" hidden>
+    <div class="panel">
+      <h1>🔑 ورود به آلبوم</h1>
+      <p>ایمیل و رمز عبورت را بزن. <b>بار اول</b> حساب ساخته می‌شود، <b>دفعات بعد</b> فقط وارد می‌شوی — بدون ایمیل و کد. 😊</p>
+      <label>ایمیل تو</label>
+      <input type="email" id="emailInp" placeholder="you@gmail.com" dir="ltr">
+      <label>رمز عبور (حداقل ۶ حرف)</label>
+      <input type="password" id="passInp" placeholder="••••••••" dir="ltr">
+      <div style="margin-top:1.2rem;">
+        <button class="btn btn-p" id="btnLogin">🔑 ورود / ساخت حساب</button>
+      </div>
+      <div id="loginMsg" style="margin-top:.9rem;font-size:.86rem;line-height:1.9;"></div>
+      <p style="margin-top:1.2rem;font-size:.78rem;">متصل به: <span id="loginHost" style="font-weight:700;color:var(--teal);"></span>
+      · <a href="#" id="btnResetCfg" style="color:#c0392b;">تغییر تنظیمات</a></p>
+    </div>
+  </section>
+
+  <section id="scrMain" hidden>
+    <header class="hero">
+      <span class="kicker">🍼 آلبوم زنده‌ی تیام جان ☁️</span>
+      <h1 class="big">قصه‌ی عکسیِ <span class="name">تیام جان</span></h1>
+      <span class="age-badge" id="ageBadge" hidden></span>
+    </header>
+    <div class="topbar">
+      <button class="btn btn-p" id="btnUpload">📷 افزودن عکس</button>
+      <div class="grow"></div>
+      <span class="user-chip" id="userChip"></span>
+      <button class="btn btn-g btn-sm" id="btnLogout">خروج</button>
+    </div>
+    <div class="live-panel">
+      <b>🔗 لینک زنده و همیشگی</b>
+      <p class="lp-sub">هر عکسی آپلود کنی همان لحظه روی لینک دیده می‌شود (جدیدها بالا). فامیل لایک ❤️ و یادگاری 🌸 می‌ذارن و تو اعلان می‌گیری.</p>
+      <button class="btn btn-p" id="btnBuildLive">🔗 ساخت لینک زنده</button>
+      <div id="liveStatus" class="lp-status" hidden></div>
+      <div id="liveResult" class="lp-result" hidden>
+        <input readonly id="liveOut" dir="ltr">
+        <button class="btn btn-p btn-sm" id="btnCopyLive">📋 کپی</button>
+        <button class="btn btn-g btn-sm" id="btnOpenLive">👀 چک کردن</button>
+      </div>
+      <div class="lp-tip">💡 برای انتشار از <b>GitHub Pages</b> استفاده کن: دکمه‌ی زیر کد آلبوم را کپی می‌کند، بعد در GitHub (فایل index.html) پیستش می‌کنی.</div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.4rem;">
+        <button class="btn btn-gh btn-sm" id="btnCopyGitHub">📋 کپی کد برای GitHub</button>
+      </div>
+      <div class="gh-note">بعد از کپی، در GitHub فایل <span dir="ltr" style="font-weight:bold;">index.html</span> را باز کن، مداد ✏️ را بزن، کد قبلی را پاک کن و کد جدید را پیست کن و Commit بزن.</div>
+      <p class="lp-note">🔓 هر کسی لینک را داشته باشد آلبوم را می‌بیند و لایک/یادگاری می‌گذارد.</p>
+    </div>
+
+    <div class="live-panel" style="border-color:#7cc576;">
+      <b style="color:#3f7d3a;">📱 آپلود عکس با موبایل</b>
+      <p class="lp-sub">با این لینک، صفحه‌ی مدیریت را روی گوشی باز می‌کنی و مستقیم از گالری یا دوربین گوشی عکس می‌گذاری.</p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+        <button class="btn btn-p btn-sm" id="btnMobileLink">📱 ساخت لینک ورود با موبایل</button>
+      </div>
+      <div id="mobileLinkBox" class="lp-result" hidden>
+        <input readonly id="mobileLinkOut" dir="ltr">
+        <button class="btn btn-p btn-sm" id="btnCopyMobile">📋 کپی</button>
+      </div>
+      <div class="gh-note" id="mobileNote" hidden>این لینک را برای گوشی خودت بفرست (مثلاً توی تلگرام/واتساپ) و روی گوشی بازش کن. خودکار تنظیم می‌شود و فقط ایمیل+رمز می‌خواهد.</div>
+    </div>
+
+    <div class="activity-panel" id="activityPanel" hidden>
+      <b>🔔 فعالیت‌های اخیر</b>
+      <div id="activityFeed"></div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <div id="chips" style="display:flex;gap:.5rem;flex-wrap:wrap;"></div>
+      <div class="grow"></div>
+      <button class="sort-btn" id="btnSort">⏳ چیدمان: جدید ← قدیم</button>
+    </div>
+    <div id="drop">☁️ عکس‌ها را <b>همین‌جا رها کن</b> یا کلیک کن · Ctrl+V هم کار می‌کند</div>
+    <main id="gallery"></main>
+    <div class="empty-msg" id="emptyMsg" hidden>هنوز عکسی در آلبوم نیست — اولین خاطره را اضافه کن! 🧸</div>
+    <footer>ساخته‌شده با ❤ برای تیام جان · عکس‌ها در فضای ابری نگهداری می‌شوند</footer>
+  </section>
+</div>
+
+<div id="lb" hidden>
+  <button class="lb-x" id="lbClose">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+  <button class="lb-nav lb-next" id="lbNext">›</button>
+  <img id="lbImg" alt="">
+  <div class="lb-cap" id="lbCap"></div>
+  <div class="lb-meta" id="lbMeta"></div>
+  <div class="lb-count" id="lbCount"></div>
+</div>
+
+<div id="toasts"></div>
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+
+<script>
+'use strict';
+// ===== تنظیم خودکار از لینک جادویی موبایل =====
+(function(){
+  if(location.hash && location.hash.indexOf('#cfg=')===0){
+    try{
+      var raw=location.hash.substring(5);
+      var json=decodeURIComponent(escape(atob(raw)));
+      var c=JSON.parse(json);
+      if(c && c.url && c.anon){
+        localStorage.setItem('tiam_sb_cfg',JSON.stringify({url:c.url,anon:c.anon}));
+      }
+    }catch(e){}
+    location.replace(location.href.split('#')[0]);
+  }
+})();
+
+const $=s=>document.querySelector(s);
+const fa=n=>Number(n).toLocaleString('fa-IR');
+const BUCKET='album-photos';
+const BDAY='2026-07-04';
+const STICKERS=['🍼','😴','🛁','🎂','🎈','🧸','⭐','🌸'];
+const TAPES=['rgba(255,211,77,.8)','rgba(255,107,94,.65)','rgba(98,182,232,.6)','rgba(255,180,194,.75)','rgba(124,197,118,.6)'];
+const FLAGS=['#ff6b5e','#ffd34d','#62b6e8','#ffb4c2','#7cc576'];
+let cfg=null,sb=null,user=null,album=null,photos=[],visible=[],view='all',sortAsc=false,lightIdx=-1;
+
+function cleanSupaUrl(input){
+  input=(input||'').trim().replace(/\/+$/,'');
+  let m=input.match(/https?:\/\/([a-zA-Z0-9-]+)\.supabase\.co/);
+  if(m)return 'https://'+m[1]+'.supabase.co';
+  m=input.match(/supabase\.com\/dashboard\/project\/([a-zA-Z0-9]+)/);
+  if(m)return 'https://'+m[1]+'.supabase.co';
+  if(/^[a-zA-Z0-9_-]{10,}$/.test(input))return 'https://'+input+'.supabase.co';
+  return input;
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function timeAgo(t){
+  const s=Math.floor((Date.now()-new Date(t))/1000);
+  if(s<60)return 'همین الان';
+  if(s<3600)return fa(Math.floor(s/60))+' دقیقه پیش';
+  if(s<86400)return fa(Math.floor(s/3600))+' ساعت پیش';
+  return fa(Math.floor(s/86400))+' روز پیش';
+}
+
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  $('#toasts').appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='.4s';setTimeout(()=>t.remove(),400);},4200);}
+function show(id){['scrSetup','scrLogin','scrMain'].forEach(s=>$('#'+s).hidden=true);$('#'+id).hidden=false;window.scrollTo(0,0);}
+function parseL(s){const p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function faDate(t){return new Date(t).toLocaleDateString('fa-IR');}
+function ageStr(bd){
+  const b=parseL(bd),n=new Date();
+  let m=(n.getFullYear()-b.getFullYear())*12+(n.getMonth()-b.getMonth());
+  let d=n.getDate()-b.getDate();
+  if(d<0){m--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate();}
+  if(m<0)return '';
+  const y=Math.floor(m/12),mm=m%12;let t='🎂 ';
+  if(y)t+=fa(y)+' سال و ';
+  if(mm||y)t+=fa(mm)+' ماه و ';
+  return t+fa(d)+' روزه · متولد '+parseL(bd).toLocaleDateString('fa-IR',{year:'numeric',month:'long',day:'numeric'});
+}
+(function(){const b=$('#bunting');for(let i=0;i<24;i++){const f=document.createElement('span');
+  f.className='flag';f.style.background=FLAGS[i%FLAGS.length];f.style.animationDelay=(i*.17)+'s';b.appendChild(f);}})();
+function renderAge(){const el=$('#ageBadge');const t=ageStr(BDAY);
+  if(t){el.textContent=t;el.hidden=false;}else el.hidden=true;}
+
+function loadCfg(){try{const c=JSON.parse(localStorage.getItem('tiam_sb_cfg'))||null;
+  if(c&&c.url)c.url=cleanSupaUrl(c.url);
+  return c;}catch(e){return null;}}
+
+function setupMsg(msg,cls){const el=$('#setupMsg');el.textContent=msg||'';el.className='setup-msg'+(cls?' '+cls:'');}
+$('#cfgUrl').addEventListener('input',()=>{
+  const c=cleanSupaUrl($('#cfgUrl').value);
+  $('#cleanedUrl').textContent=$('#cfgUrl').value.trim()?('آدرسی که استفاده می‌شود: '+c):'';
+});
+
+$('#btnSaveCfg').onclick=async()=>{
+  const url=cleanSupaUrl($('#cfgUrl').value);
+  const key=$('#cfgKey').value.trim();
+  setupMsg('');
+  if(!url.includes('.supabase.co')){setupMsg('❌ آدرس درست نیست. آدرس مرورگر را از داشبورد سوپابیس کپی کن.','err');return;}
+  if(!key){setupMsg('❌ کلید خالی است.','err');return;}
+  if(key.startsWith('sb_secret_')){setupMsg('❌ این کلید Secret است. کلید Publishable key را بگذار.','err');return;}
+  $('#btnSaveCfg').disabled=true;
+  setupMsg('⏳ در حال تست اتصال به '+url+' …','info');
+  try{
+    const c=window.supabase.createClient(url,key);
+    const {error}=await c.auth.signInWithPassword({email:'test-connection@example.com',password:'testtest12345'});
+    if(!error||/invalid login credentials/i.test(error.message)){
+      setupMsg('✅ عالی! آدرس و کلید درست است. در حال ذخیره…','ok');
+      localStorage.setItem('tiam_sb_cfg',JSON.stringify({url,anon:key}));
+      setTimeout(()=>location.reload(),900);return;
+    }
+    setupMsg('⚠️ خطا در اتصال: '+error.message,'err');
+  }catch(e){
+    setupMsg('❌ خطا: '+(e.message||e),'err');
+  }
+  $('#btnSaveCfg').disabled=false;
+};
+$('#btnResetCfg').onclick=e=>{e.preventDefault();localStorage.removeItem('tiam_sb_cfg');location.reload();};
+
+$('#btnLogin').onclick=async()=>{
+  const email=$('#emailInp').value.trim();
+  const pass=$('#passInp').value;
+  const msg=$('#loginMsg');
+  msg.textContent='';msg.style.color='';
+  if(!email||!pass){toast('ایمیل و رمز را هر دو وارد کن 🙂');return;}
+  if(pass.length<6){toast('رمز باید حداقل ۶ حرف باشد');return;}
+  $('#btnLogin').disabled=true;
+  msg.textContent='⏳ در حال ورود…';
+  let {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(!error&&data.session){
+    user=data.user;toast('🎉 خوش آمدی!');enterMain();$('#btnLogin').disabled=false;return;
+  }
+  if(error&&/invalid login credentials/i.test(error.message)){
+    msg.textContent='⏳ حساب پیدا نشد، در حال ساخت حساب جدید…';
+    const su=await sb.auth.signUp({email,password:pass});
+    if(su.error){msg.textContent='❌ خطا: '+su.error.message;msg.style.color='#c0392b';}
+    else if(su.data.session){user=su.data.user;toast('🎉 حساب ساخته شد و وارد شدی!');enterMain();}
+    else{msg.textContent='⚠️ حساب ساخته شد ولی نیاز به تأیید دارد. در داشبورد با Auto Confirm بساز.';msg.style.color='#c0392b';}
+  }else if(error){msg.textContent='❌ خطا: '+error.message;msg.style.color='#c0392b';}
+  $('#btnLogin').disabled=false;
+};
+$('#btnLogout').onclick=async()=>{await sb.auth.signOut();user=null;album=null;photos=[];show('scrLogin');};
+
+async function enterMain(){
+  show('scrMain');renderAge();
+  $('#userChip').textContent='👤 '+user.email;
+  try{await ensureAlbum();await loadPhotos();initLive();await loadActivity(true);setupRealtime();}
+  catch(e){toast('خطا در اتصال به فضای ابری 😢');}
+}
+async function ensureAlbum(){
+  let {data,error}=await sb.from('albums').select('*').eq('owner',user.id).order('created_at',{ascending:true});
+  if(error)throw error;
+  if(data&&data.length){album=data[0];return;}
+  const r=await sb.from('albums').insert({name:'تیام جان',bday:BDAY,owner:user.id}).select().single();
+  if(r.error)throw r.error;
+  album=r.data;
+}
+async function loadPhotos(){
+  const {data,error}=await sb.from('photos').select('*').eq('album_id',album.id).order('added_at',{ascending:false});
+  if(error)throw error;
+  photos=data||[];render();
+}
+
+async function loadActivity(notify){
+  try{
+    const {data:cms}=await sb.from('comments').select('*').order('created_at',{ascending:false});
+    const {data:lks}=await sb.from('likes').select('id,created_at,photo_id').order('created_at',{ascending:false});
+    const comments=cms||[];const likes=lks||[];
+    const feed=[];
+    comments.forEach(c=>feed.push({type:'comment',time:c.created_at,photo_id:c.photo_id,author:c.author,message:c.message}));
+    likes.forEach(l=>feed.push({type:'like',time:l.created_at,photo_id:l.photo_id}));
+    feed.sort((a,b)=>new Date(b.time)-new Date(a.time));
+    renderActivityFeed(feed);
+    const seen=JSON.parse(localStorage.getItem('tiam_seen')||'{"likes":0,"comments":0}');
+    const newLikes=Math.max(0,likes.length-seen.likes);
+    const newComments=Math.max(0,comments.length-seen.comments);
+    if(notify&&(newLikes>0||newComments>0)){
+      let msg='🎉 ';
+      if(newLikes>0)msg+=fa(newLikes)+' لایک جدید ';
+      if(newComments>0)msg+=fa(newComments)+' یادگاری جدید ';
+      toast(msg+'داری!');
+    }
+    localStorage.setItem('tiam_seen',JSON.stringify({likes:likes.length,comments:comments.length}));
+  }catch(e){}
+}
+function renderActivityFeed(items){
+  const panel=$('#activityPanel');
+  const feed=$('#activityFeed');
+  if(!items.length){panel.hidden=true;return;}
+  panel.hidden=false;
+  feed.innerHTML='';
+  items.slice(0,12).forEach(it=>{
+    const photo=photos.find(p=>p.id===it.photo_id);
+    const div=document.createElement('div');
+    div.className='act-item';
+    const img=photo?'<img src="'+photo.url+'">':'';
+    const icon=it.type==='like'?'❤️':'🌸';
+    let txt=it.type==='like'?'یک نفر این عکس را لایک کرد':'<b>'+esc(it.author||'مهمان')+'</b> نوشت: '+esc(it.message||'');
+    div.innerHTML=img+'<div class="act-txt">'+icon+' '+txt+'<small>'+timeAgo(it.time)+'</small></div>';
+    feed.appendChild(div);
+  });
+}
+function setupRealtime(){
+  try{
+    sb.channel('tiam-activity')
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'likes'},()=>{
+        toast('❤️ یک نفر عکست را لایک کرد!');
+        loadActivity(false);
+      })
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'comments'},(p)=>{
+        const a=(p&&p.new&&p.new.author)?p.new.author:'مهمان';
+        toast('🌸 '+a+' یک یادگاری گذاشت!');
+        loadActivity(false);
+      })
+      .subscribe();
+  }catch(e){}
+}
+
+function processFile(f){return new Promise(res=>{
+  const done=bmp=>{const w=bmp.width||bmp.naturalWidth,h=bmp.height||bmp.naturalHeight;
+    const M=1400,s=Math.min(1,M/Math.max(w,h));
+    const c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*s));c.height=Math.max(1,Math.round(h*s));
+    c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+    if(bmp.close)try{bmp.close()}catch(e){}
+    c.toBlob(b=>res(b),'image/jpeg',.85);};
+  createImageBitmap(f,{imageOrientation:'from-image'}).then(done).catch(()=>{
+    const u=URL.createObjectURL(f);const im=new Image();
+    im.onload=()=>{done(im);URL.revokeObjectURL(u);};im.onerror=()=>res(null);im.src=u;});
+});}
+async function uploadFiles(files){
+  const list=[...files].filter(f=>f.type.startsWith('image/'));
+  if(!list.length)return;
+  let n=0;
+  for(let i=0;i<list.length;i++){
+    toast('📤 در حال آپلود عکس '+fa(i+1)+' از '+fa(list.length)+'…');
+    const blob=await processFile(list[i]);
+    if(!blob)continue;
+    const id=(crypto.randomUUID?crypto.randomUUID():'p'+Date.now()+Math.random().toString(16).slice(2));
+    const path=album.id+'/'+id+'.jpg';
+    const {error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg'});
+    if(error){toast('خطا در آپلود 😢');continue;}
+    const {data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+    await sb.from('photos').insert({id,album_id:album.id,path,url:publicUrl,caption:'',added_at:new Date(Date.now()+i).toISOString()});
+    n++;
+  }
+  if(n){toast('🎉 '+fa(n)+' عکس اضافه شد — الان بالای آلبوم و روی لینک زنده هم هست!');await loadPhotos();}
+}
+$('#btnUpload').onclick=()=>$('#fileInput').click();
+$('#drop').onclick=()=>$('#fileInput').click();
+$('#fileInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
+['dragover','dragenter'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();document.body.classList.add('dragging');}));
+['dragleave','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();document.body.classList.remove('dragging');}));
+document.addEventListener('drop',e=>{if(e.dataTransfer.files.length)uploadFiles(e.dataTransfer.files);});
+document.addEventListener('paste',e=>{const fs=e.clipboardData&&e.clipboardData.files;if(fs&&fs.length)uploadFiles(fs);});
+
+function tiltOf(id){let h=0;for(const ch of id)h=(h*31+ch.charCodeAt(0))|0;return ((Math.abs(h)%5)-2)*1.4;}
+function currentList(){
+  let list=photos.filter(p=>view==='all'?true:view==='fav'?p.fav:p.sticker===view);
+  list.sort((a,b)=>sortAsc?new Date(a.added_at)-new Date(b.added_at):new Date(b.added_at)-new Date(a.added_at));
+  return list;
+}
+function render(){
+  visible=currentList();
+  const g=$('#gallery');g.innerHTML='';
+  $('#emptyMsg').hidden=photos.length>0;
+  visible.forEach((p,i)=>{
+    const fig=document.createElement('figure');
+    fig.className='polaroid';
+    fig.style.setProperty('--tilt',tiltOf(p.id)+'deg');
+    fig.style.setProperty('--tape',TAPES[i%TAPES.length]);
+    fig.innerHTML='<span class="tape"></span>'
+      +(p.sticker?'<span class="sticker-badge">'+p.sticker+'</span>':'')
+      +(p.fav?'<span class="fav-heart">❤️</span>':'')
+      +'<div class="ph"><img loading="lazy" src="'+p.url+'" alt=""></div>'
+      +'<div class="acts">'
+        +'<button data-a="fav">'+(p.fav?'❤️':'🤍')+'</button>'
+        +'<button data-a="tag">🏷</button>'
+        +'<button data-a="del">🗑</button>'
+      +'</div>'
+      +'<figcaption><span class="cap" contenteditable="true" spellcheck="false">'+esc(p.caption||'')+'</span>'
+      +'<span class="pdate">'+faDate(p.added_at)+'</span></figcaption>';
+    fig.querySelector('.ph').addEventListener('click',()=>openLB(i));
+    fig.querySelectorAll('.acts button').forEach(b=>b.onclick=async e=>{
+      e.stopPropagation();
+      const a=b.dataset.a;
+      if(a==='fav'){p.fav=!p.fav;await sb.from('photos').update({fav:p.fav}).eq('id',p.id);render();}
+      else if(a==='tag'){const ix=p.sticker?STICKERS.indexOf(p.sticker):-1;
+        p.sticker=(ix+1>=STICKERS.length)?null:STICKERS[ix+1];
+        await sb.from('photos').update({sticker:p.sticker}).eq('id',p.id);render();}
+      else{
+        await sb.storage.from(BUCKET).remove([p.path]);
+        await sb.from('photos').delete().eq('id',p.id);
+        photos=photos.filter(x=>x.id!==p.id);render();toast('🗑 حذف شد');
+      }
+    });
+    const cap=fig.querySelector('.cap');
+    cap.addEventListener('blur',async()=>{const v=cap.textContent.trim();
+      if(v!==(p.caption||'')){p.caption=v;await sb.from('photos').update({caption:v}).eq('id',p.id);}});
+    cap.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();cap.blur();}});
+    g.appendChild(fig);
+  });
+  renderChips();renderStats();
+}
+function renderChips(){
+  const c=$('#chips');c.innerHTML='';
+  const mk=(key,label)=>{const b=document.createElement('button');b.className='chip'+(view===key?' on':'');
+    b.textContent=label;b.onclick=()=>{view=key;render();};c.appendChild(b);};
+  mk('all','🖼 همه');
+  if(photos.some(p=>p.fav))mk('fav','❤️ محبوب‌ها');
+  STICKERS.filter(s=>photos.some(p=>p.sticker===s)).forEach(s=>mk(s,s));
+}
+function renderStats(){
+  const s=$('#stats');
+  let h='<span class="stat">🖼 <b>'+fa(photos.length)+'</b> عکس</span>';
+  const t=ageStr(BDAY);if(t)h+='<span class="stat"><b>'+t+'</b></span>';
+  const favs=photos.filter(p=>p.fav).length;
+  if(favs)h+='<span class="stat">❤️ <b>'+fa(favs)+'</b> محبوب</span>';
+  s.innerHTML=h;
+}
+$('#btnSort').onclick=()=>{sortAsc=!sortAsc;
+  $('#btnSort').textContent=sortAsc?'⏳ چیدمان: قدیمی ← جدید':'⏳ چیدمان: جدید ← قدیم';render();};
+
+function openLB(i){lightIdx=i;updLB();$('#lb').hidden=false;document.body.style.overflow='hidden';}
+function closeLB(){$('#lb').hidden=true;document.body.style.overflow='';lightIdx=-1;}
+function updLB(){
+  const p=visible[lightIdx];if(!p){closeLB();return;}
+  $('#lbImg').src=p.url;
+  $('#lbCap').textContent=p.caption||'';
+  $('#lbMeta').textContent=(p.sticker?p.sticker+' · ':'')+faDate(p.added_at);
+  $('#lbCount').textContent=fa(lightIdx+1)+' از '+fa(visible.length);
+}
+function lbStep(d){lightIdx=(lightIdx+d+visible.length)%visible.length;updLB();}
+$('#lbClose').onclick=closeLB;
+$('#lbPrev').onclick=()=>lbStep(1);
+$('#lbNext').onclick=()=>lbStep(-1);
+document.addEventListener('keydown',e=>{
+  if($('#lb').hidden)return;
+  if(e.key==='Escape')closeLB();
+  else if(e.key==='ArrowLeft')lbStep(-1);
+  else if(e.key==='ArrowRight')lbStep(1);
+});
+
+function liveStatus(msg,cls){const el=$('#liveStatus');el.hidden=!msg;el.textContent=msg||'';
+  el.className='lp-status'+(cls?' '+cls:'');}
+function initLive(){
+  const saved=localStorage.getItem('tiam_live_link')||'';
+  if(saved){$('#liveOut').value=saved;$('#liveResult').hidden=false;
+    liveStatus('✅ لینک زنده‌ات آماده است.','ok');}
+}
+function buildLiveViewer(){
+  const html='<!DOCTYPE html>\n<html lang="fa" dir="rtl"><head><meta charset="UTF-8">'
+  +'<meta name="viewport" content="width=device-width,initial-scale=1">'
+  +'<title>آلبوم تیام جان 🍼</title>'
+  +'<style>'
+  +'*{box-sizing:border-box;margin:0;padding:0}'
+  +'body{font-family:Tahoma,sans-serif;min-height:100vh;color:#123f3a;overflow-x:hidden;'
+  +'background:linear-gradient(135deg,#eaf6fd 0%,#f2fbf5 40%,#fdf3e7 75%,#fdeef0 100%);background-attachment:fixed}'
+  +'.fl{position:fixed;font-size:22px;opacity:.35;pointer-events:none;z-index:0;animation:floaty 9s ease-in-out infinite}'
+  +'@keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-34px) rotate(8deg)}}'
+  +'header{text-align:center;padding:50px 16px 14px;position:relative;z-index:2}'
+  +'h1{font-size:clamp(2.3rem,7vw,3.6rem);font-weight:900;letter-spacing:-1px}'
+  +'h1 b{background:linear-gradient(135deg,#ff6b5e,#ff9a6b);-webkit-background-clip:text;background-clip:text;color:transparent}'
+  +'.age{display:inline-block;background:#fff3cd;border:2px solid #f2c14e;color:#8a6100;border-radius:999px;padding:.35rem 1.1rem;font-weight:bold;font-size:.9rem;margin-top:.6rem;box-shadow:0 4px 12px rgba(242,193,78,.3)}'
+  +'.cnt{color:#4c6b66;font-size:.9rem;margin-top:.8rem}'
+  +'.grid{columns:240px;column-gap:20px;max-width:1100px;margin:28px auto;padding:0 18px 60px;position:relative;z-index:2}'
+  +'.p{background:#fff;padding:10px 10px 12px;border-radius:10px;margin:0 0 22px;break-inside:avoid;position:relative;'
+  +'box-shadow:0 10px 26px rgba(18,63,58,.14);transform:rotate(var(--t));transition:.35s;cursor:zoom-in}'
+  +'.p:hover{transform:rotate(0) translateY(-8px) scale(1.02);box-shadow:0 22px 44px rgba(18,63,58,.24);z-index:3}'
+  +'.p::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:90px;height:24px;'
+  +'background:rgba(255,211,77,.8);border-radius:2px;box-shadow:0 3px 6px rgba(0,0,0,.08)}'
+  +'.sk{position:absolute;top:10px;right:10px;font-size:1.6rem;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}'
+  +'.fv{position:absolute;top:10px;left:10px;font-size:1.1rem;z-index:2}'
+  +'.im{line-height:0;border-radius:6px;overflow:hidden;background:#eef4f2}'
+  +'.im img{width:100%;display:block;transition:.4s}'
+  +'.p:hover .im img{transform:scale(1.05)}'
+  +'figcaption{display:flex;justify-content:space-between;gap:8px;padding-top:10px;align-items:baseline}'
+  +'.c{font-weight:bold;font-size:.88rem;color:#214f49;flex:1}.d{font-size:.68rem;color:#8aa6a1;white-space:nowrap}'
+  +'#msg{text-align:center;padding:44px 20px;color:#4c6b66;font-size:1.05rem;position:relative;z-index:2}'
+  +'#lb{position:fixed;inset:0;background:rgba(10,32,29,.94);display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}'
+  +'#lb img{max-width:90vw;max-height:46vh;background:#fff;padding:8px;border-radius:12px;box-shadow:0 30px 70px rgba(0,0,0,.5)}'
+  +'#lbC{color:#fff;font-weight:bold;margin-top:10px;font-size:1rem;text-align:center}'
+  +'#lbD{color:#9fc5be;font-size:.8rem;margin-top:.3rem}#lbN{color:#9fc5be;font-size:.78rem;margin-top:.4rem}'
+  +'.nx{position:absolute;top:28%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:0;background:#fff;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.3)}'
+  +'#pv{right:12px}#nv{left:12px}#xx{position:absolute;top:12px;left:12px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;font-size:1.05rem;cursor:pointer}'
+  +'.lb-actions{margin-top:.8rem}'
+  +'.likebtn{background:#fff;border:0;border-radius:999px;padding:.5rem 1.3rem;font-size:.95rem;cursor:pointer;font-weight:bold;color:#e8554a;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:.2s}'
+  +'.likebtn:hover{transform:scale(1.06)}'
+  +'.likebtn.liked{background:#fdecea}'
+  +'.comments{max-width:92vw;width:560px;max-height:190px;overflow:auto;background:#fff;border-radius:16px;margin-top:.8rem;padding:.8rem 1rem;text-align:right;box-shadow:0 8px 24px rgba(0,0,0,.25)}'
+  +'.comment{border-bottom:1px solid #f0eee8;padding:.5rem 0;font-size:.82rem;line-height:1.7}'
+  +'.comment:last-child{border-bottom:none}'
+  +'.comment b{color:#14655b}.comment small{color:#8aa6a1;display:block;font-size:.66rem}'
+  +'.cform{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}'
+  +'.cform input{flex:1;min-width:110px;border:2px solid #e3f2ee;border-radius:12px;padding:.5rem .7rem;font-size:.82rem;font-family:inherit}'
+  +'.cform input:focus{outline:none;border-color:#14655b}'
+  +'.burst{position:fixed;pointer-events:none;z-index:99;font-size:20px;transition:all 1.1s ease-out}'
+  +'footer{text-align:center;color:#7a9790;font-size:.8rem;padding:0 0 40px;position:relative;z-index:2}'
+  +'</style></head><body>'
+  +'<header><h1>آلبوم <b id="hname">تیام جان</b> 🍼</h1>'
+  +'<div class="age" id="hage"></div><div class="cnt" id="hcnt"></div></header>'
+  +'<div id="msg">در حال باز کردن آلبوم…</div>'
+  +'<div class="grid" id="grid"></div>'
+  +'<div id="lb"><button id="xx">✕</button><button class="nx" id="pv">‹</button><button class="nx" id="nv">›</button>'
+  +'<img id="lbI" alt=""><div id="lbC"></div><div id="lbD"></div><div id="lbN"></div>'
+  +'<div class="lb-actions"><button class="likebtn" id="likeBtn">❤️ <span id="likeCount">۰</span></button></div>'
+  +'<div class="comments"><div id="commentsList"></div>'
+  +'<div class="cform"><input id="cname" placeholder="اسم (اختیاری)"><input id="cmsg" placeholder="یه یادگاری بنویس…"><button class="likebtn" id="cSend">ثبت 🌸</button></div></div>'
+  +'</div>'
+  +'<footer>ساخته‌شده با ❤ برای تیام جان</footer>'
+  +'<scr'+'ipt src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/scr'+'ipt>'
+  +'<scr'+'ipt>'
+  +'var CFG='+JSON.stringify(cfg)+';'
+  +'var ALBUMID="'+album.id+'";'
+  +'var sb=supabase.createClient(CFG.url,CFG.anon);'
+  +'function fa(n){return Number(n).toLocaleString("fa-IR")}'
+  +'function parseD(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}'
+  +'function ageStr(bd){var b=parseD(bd),n=new Date();var m=(n.getFullYear()-b.getFullYear())*12+(n.getMonth()-b.getMonth());var d=n.getDate()-b.getDate();'
+  +'if(d<0){m--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate()}if(m<0)return"";'
+  +'var y=Math.floor(m/12),mm=m%12,t="🎂 ";if(y)t+=fa(y)+" سال و ";if(mm||y)t+=fa(mm)+" ماه و ";'
+  +'return t+fa(d)+" روزه · متولد "+parseD(bd).toLocaleDateString("fa-IR",{year:"numeric",month:"long",day:"numeric"})}'
+  +'var DEC=["🧸","🍼","⭐","🌸","💛","🎈"];'
+  +'for(var di=0;di<10;di++){var s=document.createElement("span");s.className="fl";s.textContent=DEC[di%DEC.length];'
+  +'s.style.left=(Math.random()*95)+"%";s.style.top=(Math.random()*95)+"%";s.style.animationDelay=(Math.random()*8)+"s";'
+  +'s.style.fontSize=(16+Math.random()*16)+"px";document.body.appendChild(s);}'
+  +'var _ph=[],cur=-1,curId=null;'
+  +'function heartBurst(){var b=document.getElementById("likeBtn");var r=b.getBoundingClientRect();'
+  +'for(var i=0;i<7;i++){var h=document.createElement("span");h.className="burst";h.textContent="❤️";'
+  +'h.style.left=(r.left+r.width/2)+"px";h.style.top=(r.top)+"px";document.body.appendChild(h);'
+  +'(function(el){setTimeout(function(){el.style.transform="translate("+((Math.random()*120-60))+"px,-"+(90+Math.random()*80)+"px)";el.style.opacity="0";},30);'
+  +'setTimeout(function(){el.remove()},1200);})(h);}}'
+  +'async function loadSocial(pid){'
+  +'var lb2=document.getElementById("likeBtn");var lc=document.getElementById("likeCount");var cl=document.getElementById("commentsList");'
+  +'try{'
+  +'var lr=await sb.from("likes").select("id").eq("photo_id",pid);'
+  +'lc.textContent=fa(lr.data?lr.data.length:0);'
+  +'if(localStorage.getItem("liked_"+pid)){lb2.classList.add("liked")}else{lb2.classList.remove("liked")}'
+  +'var cr=await sb.from("comments").select("*").eq("photo_id",pid).order("created_at",{ascending:true});'
+  +'var cm=cr.data||[];cl.innerHTML="";'
+  +'if(cm.length===0){var d0=document.createElement("div");d0.className="comment";d0.textContent="هنوز یادگاری نیست. اولین نفر باش! 🌸";cl.appendChild(d0);}'
+  +'for(var i=0;i<cm.length;i++){var d=document.createElement("div");d.className="comment";'
+  +'var b=document.createElement("b");b.textContent=(cm[i].author||"مهمان")+" :";'
+  +'var sp=document.createElement("span");sp.textContent=" "+(cm[i].message||"");'
+  +'var sm=document.createElement("small");sm.textContent=new Date(cm[i].created_at).toLocaleDateString("fa-IR");'
+  +'d.appendChild(b);d.appendChild(sp);d.appendChild(sm);cl.appendChild(d);}'
+  +'}catch(e){}}'
+  +'document.getElementById("likeBtn").onclick=function(){doLike(curId)};'
+  +'document.getElementById("cSend").onclick=function(){addComment(curId)};'
+  +'async function doLike(pid){if(!pid)return;if(localStorage.getItem("liked_"+pid))return;'
+  +'await sb.from("likes").insert({photo_id:pid});localStorage.setItem("liked_"+pid,"1");heartBurst();loadSocial(pid);}'
+  +'async function addComment(pid){if(!pid)return;'
+  +'var name=document.getElementById("cname").value.trim()||"مهمان";'
+  +'var msg=document.getElementById("cmsg").value.trim();if(!msg)return;'
+  +'await sb.from("comments").insert({photo_id:pid,author:name,message:msg});'
+  +'document.getElementById("cmsg").value="";loadSocial(pid);}'
+  +'async function boot(){var m=document.getElementById("msg");'
+  +'try{'
+  +'var ar=await sb.from("albums").select("*").eq("id",ALBUMID).maybeSingle();'
+  +'if(!ar.data){m.textContent="آلبوم پیدا نشد 😢";return}'
+  +'var a=ar.data;'
+  +'document.title="آلبوم "+a.name+" 🍼";'
+  +'document.getElementById("hname").textContent=a.name;'
+  +'if(a.bday){document.getElementById("hage").textContent=ageStr(a.bday)}else{document.getElementById("hage").style.display="none"}'
+  +'var pr=await sb.from("photos").select("*").eq("album_id",ALBUMID).order("added_at",{ascending:false});'
+  +'_ph=pr.data||[];'
+  +'document.getElementById("hcnt").textContent=fa(_ph.length)+" عکس از خاطرات "+a.name+" ✨";'
+  +'if(_ph.length===0){m.textContent="هنوز عکسی در این آلبوم نیست 🧸";return}'
+  +'m.style.display="none";'
+  +'var grid=document.getElementById("grid");'
+  +'for(var i=0;i<_ph.length;i++){(function(i){var p=_ph[i];'
+  +'var f=document.createElement("figure");f.className="p";'
+  +'f.style.setProperty("--t",(((i%5)-2)*1.4)+"deg");'
+  +'if(p.sticker){var sk=document.createElement("span");sk.className="sk";sk.textContent=p.sticker;f.appendChild(sk)}'
+  +'if(p.fav){var fv=document.createElement("span");fv.className="fv";fv.textContent="❤️";f.appendChild(fv)}'
+  +'var im=document.createElement("div");im.className="im";'
+  +'var img=document.createElement("img");img.loading="lazy";img.src=p.url;im.appendChild(img);f.appendChild(im);'
+  +'var fc=document.createElement("figcaption");'
+  +'var c=document.createElement("span");c.className="c";c.textContent=p.caption||"";'
+  +'var d=document.createElement("span");d.className="d";d.textContent=new Date(p.added_at).toLocaleDateString("fa-IR");'
+  +'fc.appendChild(c);fc.appendChild(d);f.appendChild(fc);'
+  +'f.onclick=function(){openLB(i)};'
+  +'grid.appendChild(f);})(i)}'
+  +'}catch(e){m.textContent="خطا در اتصال 😢";m.style.display="block"}}'
+  +'function openLB(i){cur=i;upd();document.getElementById("lb").style.display="flex"}'
+  +'function upd(){var p=_ph[cur];document.getElementById("lbI").src=p.url;'
+  +'document.getElementById("lbC").textContent=p.caption||"";'
+  +'document.getElementById("lbD").textContent=(p.sticker?p.sticker+" · ":"")+new Date(p.added_at).toLocaleDateString("fa-IR");'
+  +'document.getElementById("lbN").textContent=fa(cur+1)+" / "+fa(_ph.length);'
+  +'curId=p.id;loadSocial(p.id);}'
+  +'function step(d){cur=(cur+d+_ph.length)%_ph.length;upd()}'
+  +'document.getElementById("xx").onclick=function(){document.getElementById("lb").style.display="none"};'
+  +'document.getElementById("pv").onclick=function(){step(1)};'
+  +'document.getElementById("nv").onclick=function(){step(-1)};'
+  +'document.addEventListener("keydown",function(e){'
+  +'if(document.getElementById("lb").style.display!=="flex")return;'
+  +'if(e.key==="Escape")document.getElementById("lb").style.display="none";'
+  +'else if(e.key==="ArrowLeft")step(-1);'
+  +'else if(e.key==="ArrowRight")step(1)});'
+  +'boot();'
+  +'<\/scr'+'ipt></body></html>';
+  return new Blob([html],{type:'text/html'});
+}
+async function uploadToCatbox(blob,name){
+  const fd=new FormData();fd.append('reqtype','fileupload');fd.append('fileToUpload',blob,name);
+  const r=await fetch('https://catbox.moe/user/api.php',{method:'POST',body:fd});
+  if(!r.ok)throw new Error('http '+r.status);
+  const t=(await r.text()).trim();
+  if(!/^https?:\/\//.test(t))throw new Error(t.slice(0,80)||'no-url');
+  return t;
+}
+async function uploadToPixeldrain(blob,name){
+  const fd=new FormData();fd.append('file',blob,name);
+  const r=await fetch('https://pixeldrain.com/api/file',{method:'POST',body:fd});
+  if(!r.ok)throw new Error('http '+r.status);
+  const j=await r.json();
+  if(!j.id)throw new Error('no-id');
+  return 'https://pixeldrain.com/u/'+j.id;
+}
+$('#btnBuildLive').onclick=async()=>{
+  if(!album){toast('کمی صبر کن…');return;}
+  const btn=$('#btnBuildLive');btn.disabled=true;
+  $('#liveResult').hidden=true;
+  liveStatus('⏳ در حال ساخت لینک زنده…');
+  try{
+    const blob=buildLiveViewer();
+    let url='';
+    try{url=await uploadToCatbox(blob,'tiam-live-'+Date.now()+'.html');}
+    catch(e1){try{url=await uploadToPixeldrain(blob,'tiam-live-'+Date.now()+'.html');}catch(e2){throw e2;}}
+    localStorage.setItem('tiam_live_link',url);
+    $('#liveOut').value=url;
+    $('#liveResult').hidden=false;
+    liveStatus('✅ لینک زنده ساخته شد! کپی کن و به همه بده.','ok');
+  }catch(e){
+    liveStatus('😢 ساخت لینک خودکار نشد. از روش GitHub Pages استفاده کن: «📋 کپی کد برای GitHub» را بزن.','err');
+  }
+  btn.disabled=false;
+};
+$('#btnCopyLive').onclick=()=>{
+  const u=$('#liveOut').value;
+  const done=()=>toast('✅ لینک کپی شد — بفرستش برای همه!');
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(u).then(done).catch(()=>prompt('لینک را کپی کن:',u));
+  else prompt('لینک را کپی کن:',u);
+};
+$('#btnOpenLive').onclick=()=>{const u=$('#liveOut').value;if(u)window.open(u,'_blank');};
+
+async function copyTextFallback(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;ta.style.position='fixed';ta.style.top='0';ta.style.left='0';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  let ok=false;try{ok=document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);return ok;
+}
+$('#btnCopyGitHub').onclick=async()=>{
+  if(!album){toast('کمی صبر کن تا آلبوم آماده شود…');return;}
+  try{
+    const blob=buildLiveViewer();
+    const text=await blob.text();
+    let ok=false;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      try{await navigator.clipboard.writeText(text);ok=true;}catch(e){}
+    }
+    if(!ok)ok=copyTextFallback(text);
+    if(ok)toast('✅ کد آلبوم کپی شد! حالا در GitHub فایل index.html را باز کن، مداد ✏️ را بزن، کد قبلی را پاک کن و کد جدید را پیست کن و Commit بزن.');
+    else toast('❌ کپی نشد. مرورگر اجازه نداد.');
+  }catch(e){
+    toast('❌ خطا: '+(e.message||e));
+  }
+};
+
+// ===== لینک جادویی موبایل =====
+$('#btnMobileLink').onclick=()=>{
+  const c=loadCfg();
+  if(!c||!c.url||!c.anon){toast('اول برنامه را به سوپابیس وصل کن');return;}
+  const def='https://dksservice.github.io/tiami/admin.html';
+  const base=prompt('آدرس صفحه‌ی ادمین روی GitHub را تأیید یا وارد کن:',def);
+  if(!base)return;
+  let b=base.trim();
+  if(!/\.html$/i.test(b)){b=b.replace(/\/$/,'')+'/admin.html';}
+  const json=JSON.stringify({url:c.url,anon:c.anon});
+  let enc;
+  try{enc=btoa(unescape(encodeURIComponent(json)));}catch(e){enc=btoa(json);}
+  const link=b+'#cfg='+enc;
+  $('#mobileLinkOut').value=link;
+  $('#mobileLinkBox').hidden=false;
+  $('#mobileNote').hidden=false;
+  toast('لینک آماده شد — برای گوشی خودت بفرست و بازش کن');
+};
+$('#btnCopyMobile').onclick=()=>{
+  const u=$('#mobileLinkOut').value;
+  const done=()=>toast('✅ لینک کپی شد — برای گوشی بفرست');
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(done).catch(()=>prompt('لینک:',u));
+  else prompt('لینک:',u);
+};
+
+(async()=>{
+  cfg=loadCfg();
+  if(!cfg){show('scrSetup');return;}
+  $('#loginHost').textContent=new URL(cfg.url).host;
+  sb=window.supabase.createClient(cfg.url,cfg.anon);
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    if(session){user=session.user;enterMain();}
+    else show('scrLogin');
+  }catch(e){show('scrLogin');}
+})();
+</script>
+</body>
+</html>
