@@ -103,7 +103,7 @@ header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
 .tl-date{display:block;text-align:center;margin-bottom:18px;margin-top:10px}
 .tl-date span{display:inline-block;background:var(--butter);color:#7a5a00;font-weight:700;font-size:.75rem;
   padding:4px 12px;border-radius:999px;box-shadow:0 3px 10px rgba(255,211,77,.4);}
-.tl-meta{display:flex;justify-content:center;gap:10px;margin-top:10px;font-size:.75rem;color:var(--text-soft)}
+.tl-meta{display:flex;justify-content:center;gap:10px;margin-top:12px;font-size:.75rem;color:var(--text-soft)}
 .tl-meta span{background:var(--card);border-radius:999px;padding:3px 10px;display:flex;align-items:center;gap:4px}
 
 .photo-card{position:relative;cursor:pointer;transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
@@ -132,41 +132,43 @@ header{position:relative;z-index:2;text-align:center;padding:60px 20px 30px}
 .frame-film::before{top:6px}.frame-film::after{bottom:6px}
 .frame-film img{border-radius:2px}
 
-/* ═══ لایت‌باکس با کامنت ═══ */
-.lightbox{position:fixed;inset:0;background:rgba(10,20,30,.95);z-index:1000;display:none;align-items:flex-start;justify-content:center;
-  padding:20px;backdrop-filter:blur(10px);overflow-y:auto;}
+/* ═══ بخش کامنت زیر هر عکس ═══ */
+.tl-comments{max-width:300px;margin:16px auto 0;background:var(--card);backdrop-filter:blur(10px);
+  border-radius:16px;padding:14px;box-shadow:0 4px 16px var(--shadow);}
+.tl-comments-title{font-size:.8rem;font-weight:700;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.tl-comment-item{background:rgba(20,101,91,.06);border-radius:10px;padding:8px 12px;margin-bottom:8px;
+  border-right:3px solid var(--butter);}
+body.night .tl-comment-item{background:rgba(94,234,212,.08)}
+.tl-comment-author{font-weight:700;color:var(--teal);font-size:.78rem;margin-bottom:3px}
+.tl-comment-text{color:var(--text);font-size:.82rem;line-height:1.6;word-break:break-word}
+.tl-comment-date{color:var(--text-soft);font-size:.65rem;margin-top:3px}
+.tl-comments-empty{color:var(--text-soft);font-size:.75rem;text-align:center;padding:8px}
+.tl-comment-form{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.tl-comment-form input{font-family:'Vazirmatn',sans-serif;border:2px solid rgba(20,101,91,.15);
+  border-radius:10px;padding:9px;font-size:.8rem;width:100%;color:var(--text);background:rgba(255,255,255,.6);}
+body.night .tl-comment-form input{background:rgba(15,23,42,.6)}
+.tl-comment-form input:focus{outline:none;border-color:var(--teal)}
+.tl-comment-form button{font-family:'Vazirmatn',sans-serif;background:linear-gradient(135deg,var(--teal),#0d9488);color:#fff;
+  border:0;border-radius:10px;padding:10px;font-size:.82rem;cursor:pointer;font-weight:700;transition:.3s;}
+.tl-comment-form button:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(20,101,91,.3)}
+
+/* ═══ لایت‌باکس ═══ */
+.lightbox{position:fixed;inset:0;background:rgba(10,20,30,.95);z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px);}
 .lightbox.open{display:flex;animation:lbIn .3s ease}
 @keyframes lbIn{from{opacity:0}to{opacity:1}}
-.lb-container{max-width:600px;width:100%;margin:auto;padding:40px 0}
-.lightbox img{max-width:100%;max-height:55vh;background:#fff;padding:12px;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.6);display:block;margin:0 auto;}
+.lightbox img{max-width:90vw;max-height:60vh;background:#fff;padding:12px;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.6);}
 .lb-caption{color:#fff;font-family:'Lalezar',cursive;font-size:1.4rem;margin-top:16px;text-align:center}
 .lb-date{color:#94a3b8;font-size:.85rem;margin-top:4px;text-align:center}
-.lb-close{position:fixed;top:20px;right:20px;width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:1.4rem;cursor:pointer;transition:.3s;z-index:1001;}
+.lb-close{position:absolute;top:20px;right:20px;width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:1.4rem;cursor:pointer;transition:.3s;}
 .lb-close:hover{background:var(--accent);transform:rotate(90deg)}
-.lb-nav{position:fixed;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:1.6rem;cursor:pointer;transition:.3s;z-index:1001;}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:1.6rem;cursor:pointer;transition:.3s;}
 .lb-nav:hover{background:var(--accent)}
 .lb-prev{right:20px}.lb-next{left:20px}
-.lb-like{margin:20px auto 0;background:rgba(255,255,255,.1);border:2px solid var(--accent);color:#fff;border-radius:999px;padding:12px 32px;font-size:1.1rem;font-weight:700;cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:.3s;display:flex;align-items:center;gap:10px;}
+.lb-like{margin-top:20px;background:rgba(255,255,255,.1);border:2px solid var(--accent);color:#fff;border-radius:999px;padding:12px 32px;font-size:1.1rem;font-weight:700;cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:.3s;display:flex;align-items:center;gap:10px;}
 .lb-like:hover{background:var(--accent);transform:scale(1.05)}
 .lb-like.liked{background:var(--accent);border-color:var(--accent)}
 .lb-like .count{font-family:'Lalezar',cursive;font-size:1.4rem;transition:transform .3s}
 .lb-like .count.pop{animation:numPop .5s ease}
-
-/* ═══ بخش کامنت در لایت‌باکس ═══ */
-.lb-comments{margin-top:24px;background:rgba(255,255,255,.05);border-radius:20px;padding:20px;border:1px solid rgba(255,255,255,.1)}
-.lb-comments-title{color:#fff;font-family:'Lalezar',cursive;font-size:1.2rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.lb-comment-item{background:rgba(255,255,255,.08);border-radius:14px;padding:12px 16px;margin-bottom:10px;border-right:3px solid var(--butter)}
-.lb-comment-author{color:var(--butter);font-weight:700;font-size:.85rem;margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.lb-comment-text{color:#e2e8f0;font-size:.88rem;line-height:1.7;word-break:break-word}
-.lb-comment-date{color:#64748b;font-size:.68rem;margin-top:4px}
-.lb-comments-empty{color:#94a3b8;text-align:center;padding:16px;font-size:.85rem}
-.lb-comment-form{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.lb-comment-form input{font-family:'Vazirmatn',sans-serif;width:100%;border:2px solid rgba(255,255,255,.15);
-  border-radius:12px;padding:12px;font-size:.88rem;color:#fff;background:rgba(255,255,255,.08);resize:none;}
-.lb-comment-form input::placeholder{color:#94a3b8}
-.lb-comment-form input:focus{outline:none;border-color:var(--teal);background:rgba(255,255,255,.12)}
-.lb-comment-submit{font-family:'Vazirmatn',sans-serif;font-weight:700;background:linear-gradient(135deg,var(--teal),#0d9488);color:#fff;border:0;border-radius:12px;padding:13px;font-size:.95rem;cursor:pointer;transition:.3s;}
-.lb-comment-submit:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,101,91,.4)}
 
 /* ═══ عکس‌های لایک‌شده ═══ */
 .liked-section{position:relative;z-index:2;max-width:1100px;margin:60px auto;padding:0 20px}
@@ -190,9 +192,7 @@ footer{position:relative;z-index:2;text-align:center;padding:40px 20px;color:var
   .age-unit{min-width:48px}
   .age-num{font-size:1.6rem}
   .photo-card{max-width:100%}
-  .lb-container{padding:50px 0 30px}
-  .lb-nav{width:40px;height:40px;font-size:1.2rem}
-  .lb-prev{right:8px}.lb-next{left:8px}
+  .tl-comments{max-width:100%}
 }
 </style>
 </head>
@@ -233,26 +233,13 @@ footer{position:relative;z-index:2;text-align:center;padding:40px 20px;color:var
   <button class="lb-close" id="lbClose">✕</button>
   <button class="lb-nav lb-prev" id="lbPrev">‹</button>
   <button class="lb-nav lb-next" id="lbNext">›</button>
-  <div class="lb-container">
-    <img id="lbImg" alt="">
-    <div class="lb-caption" id="lbCaption"></div>
-    <div class="lb-date" id="lbDate"></div>
-    <button class="lb-like" id="lbLike">
-      <span>❤️</span>
-      <span class="count" id="lbLikeCount">۰</span>
-    </button>
-    
-    <!-- بخش کامنت‌های این عکس -->
-    <div class="lb-comments">
-      <div class="lb-comments-title">💬 یادگاری‌های این عکس</div>
-      <div id="lbCommentsList"></div>
-      <form class="lb-comment-form" id="lbCommentForm">
-        <input type="text" id="lbCName" placeholder="اسمت چیه؟ (اختیاری)">
-        <input type="text" id="lbCMsg" placeholder="یه یادگاری قشنگ بنویس... 🌸">
-        <button type="submit" class="lb-comment-submit">🌸 ثبت یادگاری</button>
-      </form>
-    </div>
-  </div>
+  <img id="lbImg" alt="">
+  <div class="lb-caption" id="lbCaption"></div>
+  <div class="lb-date" id="lbDate"></div>
+  <button class="lb-like" id="lbLike">
+    <span>❤️</span>
+    <span class="count" id="lbLikeCount">۰</span>
+  </button>
 </div>
 
 <div class="toast-box" id="toastBox"></div>
@@ -390,6 +377,14 @@ function toast(msg){
   setTimeout(()=>t.classList.remove("show"),3000);
 }
 
+function faDate(t){
+  return new Date(t).toLocaleDateString("fa-IR",{year:"numeric",month:"long",day:"numeric"});
+}
+function faDateTime(t){
+  const d=new Date(t);
+  return d.toLocaleDateString("fa-IR")+" · "+d.toLocaleTimeString("fa-IR",{hour:"2-digit",minute:"2-digit"});
+}
+
 async function loadData(){
   try{
     const [{data:ph},{data:lk},{data:cm}]=await Promise.all([
@@ -433,7 +428,9 @@ function renderTimeline(){
     const rot=(Math.random()*4-2).toFixed(1);
     const sticker=STICKERS[Math.floor(Math.random()*STICKERS.length)];
     const likeCount=likesMap[p.id]||0;
-    const commentCount=(commentsMap[p.id]||[]).length;
+    const comments=commentsMap[p.id]||[];
+    const commentCount=comments.length;
+    
     let frameHTML="";
     if(frame==="frame-polaroid"){
       frameHTML=`<div class="photo-card ${frame}" style="--rot:${rot}deg"><img src="${p.url}" alt=""><div class="photo-caption">${p.caption||"تیام جان"}</div></div>`;
@@ -442,18 +439,68 @@ function renderTimeline(){
     }else{
       frameHTML=`<div class="photo-card ${frame}" style="--rot:${rot}deg"><img src="${p.url}" alt=""></div>`;
     }
+    
+    // ساخت لیست کامنت‌های این عکس
+    let commentsHTML="";
+    if(commentCount>0){
+      commentsHTML=comments.map(c=>`
+        <div class="tl-comment-item">
+          <div class="tl-comment-author">🌸 ${c.author||"مهمان"}</div>
+          <div class="tl-comment-text">${c.message||""}</div>
+          <div class="tl-comment-date">${faDateTime(c.created_at)}</div>
+        </div>
+      `).join("");
+    }else{
+      commentsHTML='<div class="tl-comments-empty">اولین یادگاری را بنویس 🌸</div>';
+    }
+    
     item.innerHTML=`
       <div class="tl-dot"></div>
       <div class="tl-date"><span>${faDate(p.added_at)}</span></div>
       ${frameHTML}
       <div class="tl-meta">
         ${likeCount>0?`<span>❤️ ${fa(likeCount)}</span>`:''}
-        ${commentCount>0?`<span>💬 ${fa(commentCount)}</span>`:''}
+        <span>💬 ${fa(commentCount)}</span>
+      </div>
+      <div class="tl-comments" data-photo-id="${p.id}">
+        <div class="tl-comments-title">💬 یادگاری‌های این عکس</div>
+        <div class="tl-comments-list">${commentsHTML}</div>
+        <form class="tl-comment-form">
+          <input type="text" class="tl-cname" placeholder="اسمت (اختیاری)">
+          <input type="text" class="tl-cmsg" placeholder="یه یادگاری بنویس... 🌸">
+          <button type="submit">🌸 ثبت یادگاری</button>
+        </form>
       </div>
     `;
     item.querySelector(".photo-card").onclick=()=>openLB(i);
     tl.appendChild(item);
   });
+  
+  // اضافه کردن event listener برای فرم‌های کامنت
+  tl.querySelectorAll(".tl-comment-form").forEach(form=>{
+    form.onsubmit=async e=>{
+      e.preventDefault();
+      const container=form.closest(".tl-comments");
+      const photoId=container.dataset.photoId;
+      const nameInput=form.querySelector(".tl-cname");
+      const msgInput=form.querySelector(".tl-cmsg");
+      const name=nameInput.value.trim()||"مهمان";
+      const msg=msgInput.value.trim();
+      if(!msg){toast("یه چیزی بنویس! 🌸");return;}
+      try{
+        const {error}=await sb.from("comments").insert({photo_id:photoId,author:name,message:msg});
+        if(error)throw error;
+        msgInput.value="";
+        toast("🌸 یادگاری‌ات برای این عکس ثبت شد!");
+        fireConfetti();
+        await loadData();
+      }catch(e){
+        toast("❌ خطا در ثبت یادگاری");
+        console.error(e);
+      }
+    };
+  });
+  
   const observer=new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
@@ -467,15 +514,6 @@ function renderTimeline(){
   tl.querySelectorAll(".tl-item").forEach(item=>observer.observe(item));
 }
 
-function faDate(t){
-  return new Date(t).toLocaleDateString("fa-IR",{year:"numeric",month:"long",day:"numeric"});
-}
-function faDateTime(t){
-  const d=new Date(t);
-  return d.toLocaleDateString("fa-IR")+" · "+d.toLocaleTimeString("fa-IR",{hour:"2-digit",minute:"2-digit"});
-}
-
-// ═══ لایت‌باکس ═══
 function openLB(i){
   currentLB=i;
   const p=photos[i];
@@ -483,9 +521,7 @@ function openLB(i){
   $("#lbCaption").textContent=p.caption||"تیام جان";
   $("#lbDate").textContent=faDate(p.added_at);
   updateLBLike();
-  loadLBComments();
   $("#lightbox").classList.add("open");
-  $("#lightbox").scrollTop=0;
   document.body.style.overflow="hidden";
 }
 function closeLB(){
@@ -505,48 +541,6 @@ function updateLBLike(){
   $("#lbLikeCount").textContent=fa(count);
   $("#lbLike").classList.toggle("liked",liked);
 }
-
-// ═══ کامنت‌های عکس جاری ═══
-function loadLBComments(){
-  const p=photos[currentLB];
-  const list=$("#lbCommentsList");
-  const comments=commentsMap[p.id]||[];
-  list.innerHTML="";
-  if(!comments.length){
-    list.innerHTML='<div class="lb-comments-empty">هنوز یادگاری ثبت نشده. اولین نفر باش! 🌸</div>';
-    return;
-  }
-  comments.forEach(c=>{
-    const item=document.createElement("div");
-    item.className="lb-comment-item";
-    item.innerHTML=`
-      <div class="lb-comment-author">🌸 ${c.author||"مهمان"}</div>
-      <div class="lb-comment-text">${c.message||""}</div>
-      <div class="lb-comment-date">${faDateTime(c.created_at)}</div>
-    `;
-    list.appendChild(item);
-  });
-}
-
-$("#lbCommentForm").onsubmit=async e=>{
-  e.preventDefault();
-  const p=photos[currentLB];
-  const name=$("#lbCName").value.trim()||"مهمان";
-  const msg=$("#lbCMsg").value.trim();
-  if(!msg){toast("یه چیزی بنویس! 🌸");return;}
-  try{
-    const {error}=await sb.from("comments").insert({photo_id:p.id,author:name,message:msg});
-    if(error)throw error;
-    $("#lbCMsg").value="";
-    toast("🌸 یادگاری‌ات برای این عکس ثبت شد!");
-    fireConfetti();
-    await loadData();
-    loadLBComments();
-  }catch(e){
-    toast("❌ خطا در ثبت یادگاری");
-  }
-};
-
 $("#lbClose").onclick=closeLB;
 $("#lbPrev").onclick=()=>lbStep(-1);
 $("#lbNext").onclick=()=>lbStep(1);
