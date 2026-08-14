@@ -40,8 +40,7 @@ h1 b{color:#ff6b5e}
   font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;
   -webkit-appearance:none;margin-top:8px}
 .empty{text-align:center;color:#8aa6a1;padding:20px;font-size:.88rem}
-.count-badge{background:#ff6b5e;color:#fff;padding:2px 8px;border-radius:999px;font-size:.75rem;
-  font-weight:700}
+.count-badge{background:#ff6b5e;color:#fff;padding:2px 8px;border-radius:999px;font-size:.75rem;font-weight:700}
 .comment-item{background:#f8fffe;border:1.5px solid #e3f2ee;border-radius:12px;padding:12px;
   margin-bottom:10px;position:relative}
 .comment-author{font-weight:700;color:#14655b;font-size:.88rem;margin-bottom:4px}
@@ -52,15 +51,57 @@ h1 b{color:#ff6b5e}
 .comment-del:active{transform:scale(.95)}
 .comment-del:disabled{opacity:.5}
 .tab-bar{display:flex;gap:8px;margin-bottom:14px}
-.tab-btn{flex:1;background:#fff;border:2px solid #e3f2ee;border-radius:12px;padding:10px;
-  font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;color:#4c6b66;
+.tab-btn{flex:1;background:#fff;border:2px solid #e3f2ee;border-radius:12px;padding:10px 6px;
+  font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;color:#4c6b66;
   -webkit-appearance:none;transition:.2s}
 .tab-btn.active{background:#14655b;color:#fff;border-color:#14655b}
+.activity-item{display:flex;gap:10px;align-items:center;background:#f8fffe;border:1.5px solid #e3f2ee;
+  border-radius:12px;padding:12px;margin-bottom:10px}
+.activity-icon{font-size:1.5rem;flex-shrink:0}
+.activity-text{flex:1;font-size:.84rem;line-height:1.6;color:#214f49}
+.activity-text small{display:block;color:#8aa6a1;font-size:.68rem;margin-top:2px}
+.realtime-status{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;padding:3px 10px;
+  border-radius:999px;font-weight:700}
+.realtime-status.on{background:#e8f7ee;color:#1d7a35}
+.realtime-status.off{background:#fdecea;color:#c0392b}
+.realtime-dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ═══ Toast Notification ═══ */
+#toastContainer{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;
+  display:flex;flex-direction:column;gap:10px;width:90%;max-width:400px;pointer-events:none}
+.toast{background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 10px 40px rgba(0,0,0,.2);
+  display:flex;align-items:center;gap:12px;animation:toastIn .4s ease-out;
+  border-right:4px solid #ff6b5e;pointer-events:auto}
+.toast.like{border-right-color:#ff6b5e}
+.toast.comment{border-right-color:#14655b}
+.toast-icon{font-size:1.6rem;flex-shrink:0}
+.toast-content{flex:1}
+.toast-title{font-weight:700;font-size:.9rem;color:#123f3a;margin-bottom:2px}
+.toast-msg{font-size:.8rem;color:#4c6b66;line-height:1.5;word-break:break-word}
+.toast.hiding{animation:toastOut .4s ease-in forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-20px)}}
 </style>
 </head>
 <body>
+<div id="toastContainer"></div>
+
 <div class="container">
   <h1>📱 مدیریت آلبوم <b>تیام جان</b></h1>
+  
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h2 style="margin:0">🔔 اعلان زنده</h2>
+      <span class="realtime-status off" id="realtimeStatus">
+        <span class="realtime-dot"></span>
+        <span id="realtimeText">در حال اتصال...</span>
+      </span>
+    </div>
+    <p style="font-size:.78rem;color:#8aa6a1;line-height:1.7">
+      وقتی این صفحه باز باشد، هر کسی لایک ❤️ یا یادگاری 🌸 بگذارد، همان لحظه اینجا اعلان می‌گیری.
+    </p>
+  </div>
   
   <div class="card">
     <h2>📷 افزودن عکس جدید</h2>
@@ -74,7 +115,8 @@ h1 b{color:#ff6b5e}
   <div class="card">
     <div class="tab-bar">
       <button class="tab-btn active" id="tabPhotos">🖼 عکس‌ها <span class="count-badge" id="photoCount">0</span></button>
-      <button class="tab-btn" id="tabComments">💬 یادگاری‌ها <span class="count-badge" id="commentCount">0</span></button>
+      <button class="tab-btn" id="tabComments">💬 یادگاری <span class="count-badge" id="commentCount">0</span></button>
+      <button class="tab-btn" id="tabActivity">🔔 فعالیت <span class="count-badge" id="likeCount">0</span></button>
     </div>
     
     <div id="photosSection">
@@ -85,6 +127,11 @@ h1 b{color:#ff6b5e}
     <div id="commentsSection" hidden>
       <div id="commentsList"></div>
       <div id="commentsEmpty" class="empty" hidden>هنوز یادگاری ثبت نشده</div>
+    </div>
+    
+    <div id="activitySection" hidden>
+      <div id="activityList"></div>
+      <div id="activityEmpty" class="empty" hidden>هنوز فعالیتی ثبت نشده</div>
     </div>
     
     <button class="refresh-btn" id="btnRefresh">🔄 به‌روزرسانی</button>
@@ -117,20 +164,44 @@ function faDateTime(t){
   const d=new Date(t);
   return d.toLocaleDateString('fa-IR')+' - '+d.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
 }
+function timeAgo(t){
+  const s=Math.floor((Date.now()-new Date(t))/1000);
+  if(s<60)return 'همین الان';
+  if(s<3600)return fa(Math.floor(s/60))+' دقیقه پیش';
+  if(s<86400)return fa(Math.floor(s/3600))+' ساعت پیش';
+  return fa(Math.floor(s/86400))+' روز پیش';
+}
+
+// ═══ Toast Notification ═══
+function showToast(title,msg,type){
+  const container=$('#toastContainer');
+  const toast=document.createElement('div');
+  toast.className='toast '+type;
+  const icon=type==='like'?'❤️':'🌸';
+  toast.innerHTML='<div class="toast-icon">'+icon+'</div>'
+    +'<div class="toast-content">'
+      +'<div class="toast-title">'+title+'</div>'
+      +'<div class="toast-msg">'+msg+'</div>'
+    +'</div>';
+  container.appendChild(toast);
+  setTimeout(()=>{
+    toast.classList.add('hiding');
+    setTimeout(()=>toast.remove(),400);
+  },4000);
+}
 
 // ═══ تب‌ها ═══
-$('#tabPhotos').onclick=()=>{
-  $('#tabPhotos').classList.add('active');
-  $('#tabComments').classList.remove('active');
-  $('#photosSection').hidden=false;
-  $('#commentsSection').hidden=true;
-};
-$('#tabComments').onclick=()=>{
-  $('#tabComments').classList.add('active');
-  $('#tabPhotos').classList.remove('active');
-  $('#photosSection').hidden=true;
-  $('#commentsSection').hidden=false;
-};
+function switchTab(tab){
+  $('#tabPhotos').classList.toggle('active',tab==='photos');
+  $('#tabComments').classList.toggle('active',tab==='comments');
+  $('#tabActivity').classList.toggle('active',tab==='activity');
+  $('#photosSection').hidden=tab!=='photos';
+  $('#commentsSection').hidden=tab!=='comments';
+  $('#activitySection').hidden=tab!=='activity';
+}
+$('#tabPhotos').onclick=()=>switchTab('photos');
+$('#tabComments').onclick=()=>switchTab('comments');
+$('#tabActivity').onclick=()=>switchTab('activity');
 
 // ═══ بارگذاری عکس‌ها ═══
 async function loadPhotos(){
@@ -145,7 +216,7 @@ async function loadPhotos(){
     if(!photos.length){
       list.innerHTML='';
       $('#photosEmpty').hidden=false;
-      return;
+      return photos;
     }
     list.innerHTML='';
     photos.forEach(p=>{
@@ -175,9 +246,11 @@ async function loadPhotos(){
         }
       };
     });
+    return photos;
   }catch(e){
     list.innerHTML='<div class="empty">❌ خطا در بارگذاری</div>';
     console.error(e);
+    return [];
   }
 }
 
@@ -194,7 +267,7 @@ async function loadComments(){
     if(!comments.length){
       list.innerHTML='';
       $('#commentsEmpty').hidden=false;
-      return;
+      return comments;
     }
     list.innerHTML='';
     comments.forEach(c=>{
@@ -225,16 +298,102 @@ async function loadComments(){
         }
       };
     });
+    return comments;
+  }catch(e){
+    list.innerHTML='<div class="empty">❌ خطا در بارگذاری</div>';
+    console.error(e);
+    return [];
+  }
+}
+
+// ═══ بارگذاری فعالیت‌ها (لایک‌ها + کامنت‌ها) ═══
+async function loadActivity(){
+  const list=$('#activityList');
+  list.innerHTML='<div class="empty">⏳ در حال بارگذاری...</div>';
+  $('#activityEmpty').hidden=true;
+  try{
+    const {data:likes,error:likesErr}=await sb.from('likes').select('*').order('created_at',{ascending:false}).limit(30);
+    if(likesErr)throw likesErr;
+    const {data:comments,error:commentsErr}=await sb.from('comments').select('*').order('created_at',{ascending:false}).limit(30);
+    if(commentsErr)throw commentsErr;
+    
+    $('#likeCount').textContent=fa((likes||[]).length);
+    
+    const activity=[
+      ...(likes||[]).map(l=>({type:'like',created_at:l.created_at})),
+      ...(comments||[]).map(c=>({type:'comment',created_at:c.created_at,author:c.author,message:c.message}))
+    ].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,30);
+    
+    if(!activity.length){
+      list.innerHTML='';
+      $('#activityEmpty').hidden=false;
+      return;
+    }
+    list.innerHTML='';
+    activity.forEach(a=>{
+      const item=document.createElement('div');
+      item.className='activity-item';
+      let icon,text;
+      if(a.type==='like'){
+        icon='❤️';
+        text='یک نفر یک عکس را لایک کرد';
+      }else{
+        icon='🌸';
+        text='<b>'+(a.author||'مهمان')+'</b> نوشت: '+(a.message||'');
+      }
+      item.innerHTML='<div class="activity-icon">'+icon+'</div>'
+        +'<div class="activity-text">'+text+'<small>'+timeAgo(a.created_at)+'</small></div>';
+      list.appendChild(item);
+    });
   }catch(e){
     list.innerHTML='<div class="empty">❌ خطا در بارگذاری</div>';
     console.error(e);
   }
 }
 
+// ═══ Realtime Setup ═══
+function setupRealtime(){
+  const statusEl=$('#realtimeStatus');
+  const textEl=$('#realtimeText');
+  
+  try{
+    sb.removeChannel('mobile-notifications');
+    
+    sb.channel('mobile-notifications')
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'likes'},(payload)=>{
+        showToast('لایک جدید! ❤️','یک نفر عکست را لایک کرد','like');
+        loadActivity();
+      })
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'comments'},(payload)=>{
+        const author=payload?.new?.author||'مهمان';
+        const msg=payload?.new?.message||'';
+        showToast('یادگاری جدید از '+author, msg, 'comment');
+        loadComments();
+        loadActivity();
+      })
+      .subscribe((status)=>{
+        if(status==='SUBSCRIBED'){
+          statusEl.className='realtime-status on';
+          textEl.textContent='متصل - اعلان فعال';
+        }else if(status==='CHANNEL_ERROR'){
+          statusEl.className='realtime-status off';
+          textEl.textContent='خطا در اتصال';
+        }else{
+          statusEl.className='realtime-status off';
+          textEl.textContent='در حال اتصال...';
+        }
+      });
+  }catch(e){
+    console.error('Realtime error:',e);
+    statusEl.className='realtime-status off';
+    textEl.textContent='خطا در اتصال';
+  }
+}
+
 // ═══ آپلود عکس ═══
 $('#btnUpload').onclick=()=>$('#fileInput').click();
 $('#btnCamera').onclick=()=>$('#cameraInput').click();
-$('#btnRefresh').onclick=()=>{loadPhotos();loadComments();};
+$('#btnRefresh').onclick=()=>{loadPhotos();loadComments();loadActivity();};
 $('#fileInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
 $('#cameraInput').onchange=e=>{uploadFiles(e.target.files);e.target.value='';};
 
@@ -297,6 +456,8 @@ async function uploadFiles(files){
 // ═══ لود اولیه ═══
 loadPhotos();
 loadComments();
+loadActivity();
+setupRealtime();
 </script>
 </body>
 </html>
